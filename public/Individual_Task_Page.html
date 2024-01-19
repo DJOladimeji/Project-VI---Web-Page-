@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Task Description Page</title>
+    <link rel="stylesheet" href="styles/style.css">
+</head>
+<body>
+    <!-- Title Display -->
+    <div>
+        <h1 style="display: inline; font-size: 50px;">Placement title</h1>
+        <span class="edit-link" onclick="editTask('taskTitle')">Edit</span>
+    </div>
+
+    <!-- Delete Button -->
+    <button class="delete-button" onclick="deleteTask()">Delete</button>
+
+    <br>
+
+     <!-- Horizontal Line -->
+     <hr class ="green-hr">
+
+    <!-- Due Date display -->
+    <div>
+        <h2 style="display: inline;">Due date</span> </h2>
+        <span class="edit-link" onclick="editTask('taskDueDate')">Edit</span>
+        <p id="taskDescription">January 20, 2024.</p>
+    </div>
+
+    <br>
+
+     <!-- Horizontal Line -->
+     <hr class="green-hr">
+
+    <!-- Description display Display -->
+    <div>
+        <h2 style="display: inline;">Description</h2>
+        <span class="edit-link" onclick="editTask('taskDescription')">Edit</span>
+    </div>
+    <div class="task" id="Description">
+        <p id="taskDescription">Description of the task. Lorem ipsum dolor sit amet, consectetur adipiscing elit.</p>
+        <p id="taskDescription">Description of the task. Lorem ipsum dolor sit amet, consectetur adipiscing elit.</p>
+    </div>
+</body>
+</html>

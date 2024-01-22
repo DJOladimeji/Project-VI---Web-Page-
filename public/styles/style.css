@@ -1,6 +1,14 @@
+/* Add margins to the main content */
 body {
+  margin: 0 20px; /* Adjust the values as needed */
   font-family: Arial, sans-serif;
   margin: 20px;
+}
+
+/* Optional: Center the main content if desired */
+main {
+  max-width: 1400px; /* Set your desired maximum width */
+  margin: 0 auto; /* Center the content */
 }
 
 h1 {
@@ -66,15 +74,93 @@ body {
 
 .delete-button {
   position: absolute;
-  top: 10px;
+  top: 100px;
   right: 10px;
   background-color: #4CAF50;
   color: #fff;
   padding: 10px 15px;
   border: none;
   cursor: pointer;
+  border-radius: 5px;
 }
 
 .green-hr {
   border-color: green;
+}
+
+/* Add custom styles for the toolbar */
+header {
+  background-color: rgb(0, 0, 0);
+  padding: 10px;
+  text-align: left;
+  display: flex;
+}
+
+header img {
+  max-height: 50px; /* Adjust the max height of your logo */
+  vertical-align: left;
+}
+
+/* Adjust the margin between the search bar and the options button */
+header input[type="text"] {
+  width: 300px; /* Set your desired width */
+  height: 30px; /* Set your desired height */
+  padding: 5px; /* Adjust the padding as needed */
+  border: none;
+  border-radius: 5px;
+  margin-left: 1000px; /* Adjust the left margin as needed */
+  margin-top: 10px;
+}
+
+header person{
+  padding: 5px, 10px;
+}
+
+/* Style for the dropdown button */
+.dropdown img {
+  cursor: pointer;
+  padding: 5px 10px;
+  border: none;
+  cursor: pointer;
+  border-radius: 5px;
+}
+
+/* Style for the dropdown content */
+.dropdown-content {
+  display: none;
+  position: absolute;
+  background-color: #f9f9f9;
+  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+  z-index: 1;
+  cursor: pointer;
+  position: absolute;
+  top: 70px;
+  right: 400px;
+  color: #fff;
+  padding: 10px 15px;
+  border: none;
+  cursor: pointer;
+  border-radius: 5px;
+}
+
+.dropdown-content a {
+  display: block;
+  padding: 10px;
+  text-decoration: none;
+  color: #333;
+}
+
+/* Show the dropdown content when the dropdown button is clicked */
+.dropdown.active .dropdown-content {
+  display: block;
+}
+
+.container {
+  max-width: 800px;
+  max-height: 1000px;
+  margin: 60px auto;
+  background-color: #fff;
+  padding: 20px;
+  border-radius: 8px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
 }

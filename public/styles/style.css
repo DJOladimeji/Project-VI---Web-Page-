@@ -8,7 +8,7 @@ body {
 /* Optional: Center the main content if desired */
 main {
   max-width: 1400px; /* Set your desired maximum width */
-  margin: 0 auto; /* Center the content */
+  margin: 0 auto; /* Center the content */ 
 }
 
 h1 {

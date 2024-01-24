@@ -12,7 +12,7 @@ window.onclick = function(event) {
             if (dropdown.classList.contains('active')) {
                 dropdown.classList.remove('active');
             }
-        });
+        }); 
     }
 }
 

@@ -1,6 +1,7 @@
 #define CROW_MAIN
 
 #include "crow_all.h"
+#include "sqlite/sqlite3.h"
 #include <iostream>
 #include "string.h" 
 #include <string>

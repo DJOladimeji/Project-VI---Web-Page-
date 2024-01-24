@@ -1,4 +1,5 @@
 #include "DB.h"
+#include "cstring"
 
 void addUserToDB(char* err, sqlite3* db, sqlite3_stmt* stmt, User user) {
     string query = "insert into User VALUES ('"+ user.getEmail() + "', '" + user.getFirstName() + "', '" + user.getLastName() + "', '" + user.getPassword() + "');";

@@ -1,7 +1,8 @@
 #pragma once
 #include <iostream>
 #include <string>
-#include "sqlite\sqlite3.h"
+//#include "sqlite\sqlite3.h"
+#include "sqlite/sqlite3.h"
 #include "DB.h"
 #include "User.h"
 #include"Task.h"

@@ -9,5 +9,5 @@ find_package(Boost COMPONENTS system filesystem REQUIRED)
 find_package(Threads)
 
 include_directories(${Boost_INCLUDE_DIRS})
-add_executable(ProjectVI main.cpp)
-target_link_libraries(ProjectVI ${Boost_LIBRARIES} Threads::Threads)
+add_executable(ProjectVI main.cpp DB.cpp Tasks.cpp User.cpp)
+target_link_libraries(ProjectVI sqlite3 ${Boost_LIBRARIES} Threads::Threads)

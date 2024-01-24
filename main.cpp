@@ -69,7 +69,7 @@ int main()
     }
     else {
         cout << "Task has been deleted from DB" << endl;
-    }
+    } 
     //=====================================================================================================================================
 
     cout << endl;
@@ -83,10 +83,209 @@ int main()
 
 	crow::SimpleApp app;
 
-	CROW_ROUTE(app, "/") //to get the index.html
+	CROW_ROUTE(app, "/") //to get the home.html
 		([](const crow::request& req, crow::response& res) {
-		
-			});
+            ifstream in("../public/home.html", ifstream::in);
+            if (in) {
+                ostringstream contents;
+                contents << in.rdbuf();
+                in.close();
+                res.write(contents.str());
+            }
+            else {
+                res.write("Not Found");
+            }
+            res.end();
+		});
+
+    /* CROW_ROUTE(app, "/<string>") //to get the home.html
+        ([](const crow::request& req, crow::response& res, string filename) {
+            if (filename == "SignUpPage.html")
+            {
+                string path = "../public/SignUpPage.html";
+
+                ifstream in(path, ifstream::in);
+                if (in) {
+                    ostringstream contents;
+                    contents << in.rdbuf();
+                    in.close();
+                    res.write(contents.str());
+                }
+                else {
+                    res.write("Not Found");
+                }
+                res.end();
+            }
+        }); */ 
+
+	std::string correctEmail = "user@example.com"; // Replace with your correct email 
+
+	CROW_ROUTE(app, "/<string>").methods(HTTPMethod::Get)
+		([&correctEmail](const crow::request& req, crow::response& res, string filename)
+			{
+				if (filename == "submit") {
+					std::string submittedEmail = req.url_params.get("email");
+					//res.write("EMAIL"); 
+					//res.end(); 
+					if (submittedEmail == correctEmail) { 
+						//--------------
+							/* ofstream fout;
+							fout.open("cart.txt", ios::app);
+							if (fout.is_open()) {
+								fout << "CORRECT: " << submittedEmail << endl;
+
+								res.code = OK;
+								fout.close();
+							}
+							else
+							{
+								res.code = INVALID;
+								res.set_header("Content-Type", "text/plain");
+								res.write("Could not open file");
+							}
+
+							res.end(); */ 
+
+							string path = "../public/SignInPage.html";
+
+							ifstream in(path, ifstream::in);
+							if (in) {
+								ostringstream contents;
+								contents << in.rdbuf();
+								in.close();
+								res.write(contents.str());
+							}
+							else {
+								res.write("Not Found");
+							}
+							res.end(); 
+
+							
+							res.redirect("/SignInPage");
+							res.end();
+					}
+					else { //-----------
+					/*ofstream fout;
+					fout.open("cart.txt", ios::app);
+					if (fout.is_open()) {
+						fout << "INCORRECT: " << submittedEmail << endl;
+
+						res.code = OK;
+						fout.close();
+					}
+					else
+					{
+						res.code = INVALID;
+						res.set_header("Content-Type", "text/plain");
+						res.write("Could not open file");
+					}
+
+					res.end();*/
+
+					// Redirect to the signup page
+					string path = "../public/SignUpPage.html";
+
+					ifstream in(path, ifstream::in);
+					if (in) {
+						ostringstream contents;
+						contents << in.rdbuf();
+						in.close();
+						res.write(contents.str());
+					}
+					else {
+						res.write("Not Found");
+					}
+					res.end();
+
+					//return crow::response(301).set_header("Location", "/Signup.html");
+
+					//--------------
+					res.redirect("/SignUpPage.html");
+					res.end();
+					}
+				}
+				else if (filename == "SignUpPage.html") { //-------------
+				/*ofstream fout;
+				fout.open("cart.txt", ios::app);
+				if (fout.is_open()) {
+					fout << "CORRECT: " << endl;
+
+					res.code = OK;
+					fout.close();
+				}
+				else
+				{
+					res.code = INVALID;
+					res.set_header("Content-Type", "text/plain");
+					res.write("Could not open file");
+				}
+
+				res.end();*/
+
+				//----*/ 
+				string path = "../public/SignUpPage.html";
+
+				ifstream in(path, ifstream::in);
+				if (in) {
+					ostringstream contents;
+					contents << in.rdbuf();
+					in.close();
+					res.write(contents.str());
+				}
+				else {
+					res.write("Not Found");
+				}
+				res.end(); //----------
+				//string username = "Gurjit"; 
+
+				//crow::mustache::context ctx; 
+				//ctx["username"] = username;
+
+				// Respond with a template that embeds the username in the HTML
+				//return crow::mustache::load("Login.html").render(ctx); 
+				//return crow::response(crow::mustache::load("Login.html", ctx)); 
+
+				//return crow::mustache::load("Login.html").render({{"username", username}}); 
+			} 
+		}); 
+
+    CROW_ROUTE(app, "/styles/<string>")											//style.css route 
+        ([](const crow::request& req, crow::response& res, string filename)
+            {
+                string TempPath = "../public/styles/";
+                string path = TempPath + filename;
+
+                ifstream in(path, ifstream::in);
+                if (in) {
+                    ostringstream contents;
+                    contents << in.rdbuf();
+                    in.close();
+                    res.write(contents.str());
+                }
+                else {
+                    res.write("Not Found");
+                }
+                res.end();
+            });
+
+    CROW_ROUTE(app, "/images/<string>")											//images route (all images) 
+        ([](const crow::request& req, crow::response& res, string filename)
+            {
+                string TempPath = "../public/images/";
+                string path = TempPath + filename;
+
+                ifstream in(path, ifstream::in);
+                if (in) {
+                    ostringstream contents;
+                    contents << in.rdbuf();
+                    in.close();
+                    res.write(contents.str());
+                }
+                else {
+                    res.write("Not Found");
+                }
+                res.end();
+            });
 
 
 		app.port(23500).multithreaded().run();

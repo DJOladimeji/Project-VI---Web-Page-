@@ -18,7 +18,7 @@ int main()
 
     char* err;
 
-    //Creatinh User DB
+    //Creating User DB
     sqlite3* userdb;
     sqlite3_stmt* userstmt;
     sqlite3_open("UserDb.db", &userdb);
@@ -28,7 +28,7 @@ int main()
         cout << "error creating user DB: " << err << endl;
     }
 
-    //Dumming adding data into DB
+    //Dumming adding data into DB====================================================================================================
     string userQuery = "insert into User VALUES ('Dave.oladimeji@gmail.com', 'David', 'Oladimeji', 'password');";
     userrc = sqlite3_exec(userdb, userQuery.c_str(), NULL, NULL, &err);
     if (userrc != SQLITE_OK) {
@@ -36,6 +36,9 @@ int main()
     }
 
     sqlite3_prepare_v2(userdb, "select email, firstName, lastName, password from User", -1, &userstmt, 0);
+    deleteUserFromDB(err, userdb, userstmt, "Dave.oladimeji@gmail.com");
+    //================================================================================================================================
+
 
     //Creating Task DB
     sqlite3* taskdb;
@@ -47,7 +50,7 @@ int main()
         cout << "error creating task DB: " << err << endl;
     }
 
-    //Dumming adding data into DB
+    //Dumming adding data into DB=======================================================================================================
     string taskQuery = "insert into Task VALUES ('Dave.oladimeji@gmail.com', 'Slap Gurjit', '22 January 2024', 'Slap Gurjit in the face');";
     taskrc = sqlite3_exec(taskdb, taskQuery.c_str(), NULL, NULL, &err);
     if (taskrc != SQLITE_OK) {
@@ -56,9 +59,23 @@ int main()
 
     sqlite3_prepare_v2(taskdb, "select userEmail, taskName, dueDate, description from Task", -1, &taskstmt, 0);
 
-    cout << "Welcome to the Task Manger Website Server" << endl;
+    string deleteQuery = "DELETE FROM Task WHERE UserEmail = 'Dave.oladimeji@gmail.com' AND TaskName = 'Slap Gurjit';";
 
-    //---------------------------------------------------------------------------------------------------------------------------------------------------------
+    int rc = sqlite3_exec(taskdb, deleteQuery.c_str(), NULL, NULL, &err);
+
+    if (rc != SQLITE_OK) {
+        cout << "delete error from Task DB: " << err << endl;
+    }
+    else {
+        cout << "Task has been deleted from DB" << endl;
+    }
+    //=====================================================================================================================================
+
+    cout << endl;
+    cout << "================================================" << endl;
+    cout << "Welcome to the TaskElite Server" << endl;
+    cout << "================================================" << endl;
+    cout << endl; 
 
 
 

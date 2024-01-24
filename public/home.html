@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+  <head>
+    <meta charset="UTF-8">
+    <title>Home Page</title>
+          <link rel="stylesheet" href="styles/style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+   </head>
+<body>
+  <div class="container">
+    <div class="cover">
+        <img src="images/TaskElite.jpg" alt="">
+    </div>
+    <div class="forms">
+        <div class="form-content">
+          <div class="login-form">
+            <div class="title">Welcome to TaskElite</div>
+          <form id="home" action="" method="GET">
+            <div class="input-boxes">
+              <div class="input-box">
+                <i class="fas fa-envelope"></i>
+                <input type="text" id="email" name="email" placeholder="Enter your email" required>
+              </div>
+              <!--<div class="button input-box">
+                <input type="submit" value="Next">
+              </div>-->
+              <div><h4><p style="margin-left: 220px; line-height: 1;"><a href="#" onclick="myFunction()">Next</a></p></h4></div>
+              </form>
+              </div>
+              <form action="" method="GET"><div class="text sign-up-text">Don't have an account? <a href="SignUpPage.html">Sigup now</a></div></form> 
+            </div>
+        </form>
+      </div>
+    </div>
+
+    <script>
+      function myFunction() {
+          var action = "/submit"; 
+          document.getElementById("home").action = action; 
+          document.getElementById("home").submit(); 
+      }
+  </script>
+</body>
+</html>

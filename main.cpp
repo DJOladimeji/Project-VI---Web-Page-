@@ -1,5 +1,4 @@
 #define CROW_MAIN
-//lab 10
 
 #include "crow_all.h"
 #include <iostream>
@@ -7,6 +6,7 @@
 #include <string>
 #include <fstream>
 #include <sstream>
+#include "DB.h"
 using namespace std;
 using namespace crow;
 
@@ -14,6 +14,55 @@ using namespace crow;
 
 int main()
 {
+    //---------------------------------------------------------------------DB setup-----------------------------------------------------------------------------------
+
+    char* err;
+
+    //Creatinh User DB
+    sqlite3* userdb;
+    sqlite3_stmt* userstmt;
+    sqlite3_open("UserDb.db", &userdb);
+    int userrc = sqlite3_exec(userdb, "CREATE TABLE IF NOT EXISTS User(email varchar(1000), firstName varChar(100), lastname varchar(100), password varchar(1000));", NULL, NULL, &err);
+
+    if (userrc != SQLITE_OK) {
+        cout << "error creating user DB: " << err << endl;
+    }
+
+    //Dumming adding data into DB
+    string userQuery = "insert into User VALUES ('Dave.oladimeji@gmail.com', 'David', 'Oladimeji', 'password');";
+    userrc = sqlite3_exec(userdb, userQuery.c_str(), NULL, NULL, &err);
+    if (userrc != SQLITE_OK) {
+        cout << "error Manually adding user to DB" << err << endl;
+    }
+
+    sqlite3_prepare_v2(userdb, "select email, firstName, lastName, password from User", -1, &userstmt, 0);
+
+    //Creating Task DB
+    sqlite3* taskdb;
+    sqlite3_stmt* taskstmt;
+    sqlite3_open("TaskDb.db", &taskdb);
+    int taskrc = sqlite3_exec(taskdb, "CREATE TABLE IF NOT EXISTS Task(userEmail varchar(100), taskName varchar(100), dueDate varchar(100), description varchar(100));", NULL, NULL, &err);
+
+    if (taskrc != SQLITE_OK) {
+        cout << "error creating task DB: " << err << endl;
+    }
+
+    //Dumming adding data into DB
+    string taskQuery = "insert into Task VALUES ('Dave.oladimeji@gmail.com', 'Slap Gurjit', '22 January 2024', 'Slap Gurjit in the face');";
+    taskrc = sqlite3_exec(taskdb, taskQuery.c_str(), NULL, NULL, &err);
+    if (taskrc != SQLITE_OK) {
+        cout << "error Manually adding task to DB" << err << endl;
+    }
+
+    sqlite3_prepare_v2(taskdb, "select userEmail, taskName, dueDate, description from Task", -1, &taskstmt, 0);
+
+    cout << "Welcome to the Task Manger Website Server" << endl;
+
+    //---------------------------------------------------------------------------------------------------------------------------------------------------------
+
+
+
+
 	crow::SimpleApp app;
 
 	CROW_ROUTE(app, "/") //to get the index.html

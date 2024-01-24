@@ -1,12 +1,17 @@
 #pragma once
 #include <iostream>
 using namespace std;
+#include "Task.h"
+#include <vector>
+#include <algorithm>
 
 class User {
 	string email;
 	string firstName;
 	string lastName;
 	string password;
+	vector <Task> tasks;
+
 
 
 public:
@@ -21,4 +26,10 @@ public:
 	string getFirstName();
 	string getLastName();
 	string getPassword();
+	void addToTasksVector(Task task);
+	void removeFromTaskvector(string taskName);
+	void editTaskInVector(string taskName, string newTasKName, string newDueDate, string newDescription);
+	void editTaskNameInVector(string taskName, string newTaskName);
+	void editTaskDueDateInVector(string taskName, string newTaskDueDate);
+	void editTaskDescriptionInVector(string taskName, string newTaskDescription);  
 };

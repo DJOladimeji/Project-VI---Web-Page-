@@ -10,8 +10,8 @@ using namespace std;
 
 void addUserToDB(char* err, sqlite3* db, sqlite3_stmt* stmt, User user);
 void addTaskToDB(char* err, sqlite3* db, sqlite3_stmt* stmt, Task task);  
-void queryDBForAllTask(char* err, sqlite3* db, sqlite3_stmt* stmt, User user);
-void queryDBForSpecificTask(char* err, sqlite3* db, sqlite3_stmt* stmt, string task, User user);
+User queryDBForAllTask(char* err, sqlite3* db, sqlite3_stmt* stmt, User user);
+Task queryDBForSpecificTask(char* err, sqlite3* db, sqlite3_stmt* stmt, string task, User user);
 bool queryUserLogin(char* err, sqlite3* db, sqlite3_stmt* stmt, User* user);
 void deleteTaskFromDB(char* err, sqlite3* db, sqlite3_stmt* stmt, string task, User user); 
 void deleteUserFromDB(char* err, sqlite3* db, sqlite3_stmt* stmt, string user);  

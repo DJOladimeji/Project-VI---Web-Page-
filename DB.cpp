@@ -25,7 +25,7 @@ void addTaskToDB(char* err, sqlite3* db, sqlite3_stmt* stmt, Task task) {
     cout << "Task has been added to DB" << endl;
 }
 
-void queryDBForAllTask(char* err, sqlite3* db, sqlite3_stmt* stmt, User user) {
+User queryDBForAllTask(char* err, sqlite3* db, sqlite3_stmt* stmt, User user) {
     sqlite3_prepare_v2(db, "select userEmail, taskName, dueDate, description from Task", -1, &stmt, 0);
  
     const unsigned char* userEmail;
@@ -40,21 +40,29 @@ void queryDBForAllTask(char* err, sqlite3* db, sqlite3_stmt* stmt, User user) {
         description = sqlite3_column_text(stmt, 3);
 
         int emaillen = strlen((char*)userEmail);
-
         std::string stringEmail(reinterpret_cast<const char*>(userEmail), emaillen);
         
         if (stringEmail == user.getEmail()) { 
-            cout << endl;
-            cout << taskName << endl;
-            cout << "DueDate: " << dueDate << endl;
-            cout << "Description: " << description << endl;
-            cout << endl;
+
+            int taskNamelen = strlen((char*)taskName);
+            std::string stringTaskName(reinterpret_cast<const char*>(taskName), taskNamelen);
+
+            int dueDatelen = strlen((char*)dueDate); 
+            std::string stringDueDate(reinterpret_cast<const char*>(dueDate), dueDatelen);
+
+            int descriptionlen = strlen((char*)description);
+            std::string stringDescription(reinterpret_cast<const char*>(description), descriptionlen); 
+
+            Task task(stringEmail, stringTaskName, stringDueDate, stringDescription);  
+
+            user.addToTasksVector(task); 
         }
-        
     }
+
+    return user;  
 } 
 
-void queryDBForSpecificTask(char* err, sqlite3* db, sqlite3_stmt* stmt, string task, User user) {
+Task queryDBForSpecificTask(char* err, sqlite3* db, sqlite3_stmt* stmt, string task, User user) {
     sqlite3_prepare_v2(db, "select userEmail, taskName, dueDate, description from Task", -1, &stmt, 0);
 
     const unsigned char* userEmail;
@@ -63,6 +71,9 @@ void queryDBForSpecificTask(char* err, sqlite3* db, sqlite3_stmt* stmt, string t
     const unsigned char* description;
 
     while (sqlite3_step(stmt) != SQLITE_DONE) {
+
+        Task task;
+
         userEmail = sqlite3_column_text(stmt, 0);
         taskName = sqlite3_column_text(stmt, 1);
         dueDate = sqlite3_column_text(stmt, 2);
@@ -75,17 +86,25 @@ void queryDBForSpecificTask(char* err, sqlite3* db, sqlite3_stmt* stmt, string t
         std::string stringTaskName(reinterpret_cast<const char*>(taskName), taskNamelen);
 
         if (stringUserEmail == user.getEmail() && stringTaskName == task) {
-            cout << endl;
-            cout << taskName << endl;
-            cout << "DueDate: " << dueDate << endl;
-            cout << "Description: " << description << endl;
-            cout << endl;
+            int taskNamelen = strlen((char*)taskName); 
+            std::string stringTaskName(reinterpret_cast<const char*>(taskName), taskNamelen); 
+
+            int dueDatelen = strlen((char*)dueDate); 
+            std::string stringDueDate(reinterpret_cast<const char*>(dueDate), dueDatelen); 
+
+            int descriptionlen = strlen((char*)description); 
+            std::string stringDescription(reinterpret_cast<const char*>(description), descriptionlen); 
+
+            task.setUserEmail(stringTaskName);
+            task.setTaskName(stringTaskName); 
+            task.setDueDate(stringDueDate);  
+            task.setDescription(stringDescription);  
         }
 
     }
 }
 
-bool queryUserLogin(char* err, sqlite3* db, sqlite3_stmt* stmt, User* user) {
+bool queryUserLogin(char* err, sqlite3* db, sqlite3_stmt* stmt, User* user) { 
     sqlite3_prepare_v2(db, "select email, firstName, lastName, password from User", -1, &stmt, 0);
 
     const unsigned char* email;
@@ -133,6 +152,8 @@ void deleteTaskFromDB(char* err, sqlite3* db, sqlite3_stmt* stmt, string task, U
     else {
         cout << "Task has been deleted from DB" << endl;
     }
+
+    user.removeFromTaskvector(task);
 }
 
 void deleteUserFromDB(char* err, sqlite3* db, sqlite3_stmt* stmt, string email) { 
@@ -186,6 +207,7 @@ void editTask(char* err, sqlite3* db, sqlite3_stmt* stmt, User user, Task task, 
             }
             else {
                 std::cout << "Task updated successfully." << std::endl;
+                user.editTaskInVector(task.getTaskName(), newTaskName, newDueDate, newDescription); 
             } 
 
             sqlite3_finalize(updateStmt); // Finalize the update statement
@@ -234,6 +256,8 @@ void editTaskNameInDB(char* err, sqlite3* db, sqlite3_stmt* stmt, User user, str
             }
             else {
                 std::cout << "Task Name updated successfully." << std::endl;
+
+                user.editTaskNameInVector(task, newTaskName); 
             }
 
             sqlite3_finalize(updateStmt); // Finalize the update statement
@@ -282,6 +306,8 @@ void editDuedateInDB(char* err, sqlite3* db, sqlite3_stmt* stmt, User user, stri
             }
             else {
                 std::cout << "Du eDate updated successfully." << std::endl;
+
+                user.editTaskDueDateInVector(task, newDueDate); 
             }
 
             sqlite3_finalize(updateStmt); // Finalize the update statement
@@ -332,6 +358,8 @@ void editDescriptionInDB(char* err, sqlite3* db, sqlite3_stmt* stmt, User user, 
             }
             else {
                 std::cout << "Task updated successfully." << std::endl;
+
+                user.editTaskDescriptionInVector(task, newDescription); 
             }
 
             sqlite3_finalize(updateStmt); // Finalize the update statement

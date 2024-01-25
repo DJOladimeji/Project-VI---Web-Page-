@@ -128,11 +128,11 @@ int main()
 					//res.write("EMAIL"); 
 					//res.end(); 
 					if (submittedEmail == correctEmail) { 
-						//--------------
+						//-------------- 
 							/* ofstream fout;
 							fout.open("cart.txt", ios::app);
 							if (fout.is_open()) {
-								fout << "CORRECT: " << submittedEmail << endl;
+								fout << "CORRECT: " << submittedEmail << endl; 
 
 								res.code = OK;
 								fout.close();
@@ -161,81 +161,46 @@ int main()
 							res.end(); 
 
 							
-							res.redirect("/SignInPage");
-							res.end();
+							/* res.redirect("/SignInPage");
+							res.end(); */ 
 					}
-					else { //-----------
-					/*ofstream fout;
-					fout.open("cart.txt", ios::app);
-					if (fout.is_open()) {
-						fout << "INCORRECT: " << submittedEmail << endl;
+					else { 
+					    // Redirect to the signup page
+					    string path = "../public/SignUpPage.html";
 
-						res.code = OK;
-						fout.close();
-					}
-					else
-					{
-						res.code = INVALID;
-						res.set_header("Content-Type", "text/plain");
-						res.write("Could not open file");
-					}
-
-					res.end();*/
-
-					// Redirect to the signup page
-					string path = "../public/SignUpPage.html";
-
-					ifstream in(path, ifstream::in);
-					if (in) {
-						ostringstream contents;
-						contents << in.rdbuf();
-						in.close();
-						res.write(contents.str());
-					}
-					else {
-						res.write("Not Found");
-					}
-					res.end();
+					    ifstream in(path, ifstream::in);
+					    if (in) {
+						    ostringstream contents;
+						    contents << in.rdbuf(); 
+						    in.close();
+						    res.write(contents.str());
+					    }
+					    else {
+						    res.write("Not Found");
+					    }
+					    res.end();
 
 					//return crow::response(301).set_header("Location", "/Signup.html");
 
 					//--------------
-					res.redirect("/SignUpPage.html");
-					res.end();
+					/* res.redirect("/SignUpPage.html");
+					res.end(); */ 
 					}
 				}
-				else if (filename == "SignUpPage.html") { //-------------
-				/*ofstream fout;
-				fout.open("cart.txt", ios::app);
-				if (fout.is_open()) {
-					fout << "CORRECT: " << endl;
+				else if (filename == "SignUpPage.html") { 
+				    string path = "../public/SignUpPage.html";
 
-					res.code = OK;
-					fout.close();
-				}
-				else
-				{
-					res.code = INVALID;
-					res.set_header("Content-Type", "text/plain");
-					res.write("Could not open file");
-				}
-
-				res.end();*/
-
-				//----*/ 
-				string path = "../public/SignUpPage.html";
-
-				ifstream in(path, ifstream::in);
-				if (in) {
-					ostringstream contents;
-					contents << in.rdbuf();
-					in.close();
-					res.write(contents.str());
-				}
-				else {
-					res.write("Not Found");
-				}
-				res.end(); //----------
+				    ifstream in(path, ifstream::in);
+				    if (in) {
+					    ostringstream contents;
+					    contents << in.rdbuf();
+					    in.close();
+					    res.write(contents.str());
+				    }
+				    else {
+					    res.write("Not Found");
+				    }
+				    res.end(); 
 				//string username = "Gurjit"; 
 
 				//crow::mustache::context ctx; 
@@ -246,7 +211,32 @@ int main()
 				//return crow::response(crow::mustache::load("Login.html", ctx)); 
 
 				//return crow::mustache::load("Login.html").render({{"username", username}}); 
-			} 
+				} 
+                else if (filename == "login") {
+                    std::string passedEmail = req.url_params.get("email"); 
+                    std::string passedPassword = req.url_params.get("password");
+
+                    ofstream fout;
+                    fout.open("info.txt", ios::app);
+                    if (fout.is_open()) {
+                        fout << "Email: " << passedEmail << endl;
+                        fout << "Password: " << passedPassword << endl;
+
+                        res.code = 200;
+                        fout.close();
+                    }
+                    else
+                    {
+                        res.code = INVALID;
+                        res.set_header("Content-Type", "text/plain");
+                        res.write("Could not open file");
+                    }
+
+                    res.end();
+                }
+                else if (filename == "register") {
+
+                }
 		}); 
 
     CROW_ROUTE(app, "/styles/<string>")											//style.css route 

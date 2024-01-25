@@ -72,7 +72,7 @@ Task queryDBForSpecificTask(char* err, sqlite3* db, sqlite3_stmt* stmt, string t
 
     while (sqlite3_step(stmt) != SQLITE_DONE) {
 
-        Task task;
+        Task tasks;
 
         userEmail = sqlite3_column_text(stmt, 0);
         taskName = sqlite3_column_text(stmt, 1);
@@ -85,7 +85,7 @@ Task queryDBForSpecificTask(char* err, sqlite3* db, sqlite3_stmt* stmt, string t
         std::string stringUserEmail(reinterpret_cast<const char*>(userEmail), emaillen);
         std::string stringTaskName(reinterpret_cast<const char*>(taskName), taskNamelen);
 
-        if (stringUserEmail == user.getEmail() && stringTaskName == task) {
+        if (stringUserEmail == user.getEmail() && stringTaskName == task) { 
             int taskNamelen = strlen((char*)taskName); 
             std::string stringTaskName(reinterpret_cast<const char*>(taskName), taskNamelen); 
 
@@ -95,10 +95,10 @@ Task queryDBForSpecificTask(char* err, sqlite3* db, sqlite3_stmt* stmt, string t
             int descriptionlen = strlen((char*)description); 
             std::string stringDescription(reinterpret_cast<const char*>(description), descriptionlen); 
 
-            task.setUserEmail(stringTaskName);
-            task.setTaskName(stringTaskName); 
-            task.setDueDate(stringDueDate);  
-            task.setDescription(stringDescription);  
+            tasks.setUserEmail(stringTaskName);
+            tasks.setTaskName(stringTaskName); 
+            tasks.setDueDate(stringDueDate);  
+            tasks.setDescription(stringDescription);  
         }
 
     }

@@ -60,10 +60,10 @@ void User::removeFromTaskvector(string taskName) {
 	if (it != this->tasks.end()) {
 		//use erase-remove idiom to delete the task
 		this->tasks.erase(it); 
-		std::cout << "Task " << task << " has been reased from vector" << endl;
+		std::cout << "Task " << taskName << " has been reased from vector" << endl;
 	}
 	else {
-		cout << "Task " << task << " not found in vector" << endl;
+		cout << "Task " << taskName << " not found in vector" << endl;
 	}
 }
 
@@ -122,7 +122,7 @@ void User::editTaskDescriptionInVector(string taskName, string newTaskDescriptio
 
 	//check if the task was found
 	if (it != this->tasks.end()) {
-		it->getDescription(newTaskDescription); 
+		it->setDescription(newTaskDescription); 
 		cout << "Task " << taskName << " Description, has not been editted to " << newTaskDescription << " in the vector" << endl;  
 	}
 	else {

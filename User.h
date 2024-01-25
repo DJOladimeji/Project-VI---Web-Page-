@@ -10,11 +10,9 @@ class User {
 	string firstName;
 	string lastName;
 	string password;
-	vector <Task> tasks;
-
-
 
 public:
+	vector <Task> tasks; 
 	User();
 	User(string email, string firstName, string lastName, string password);
 

@@ -42,7 +42,7 @@ User queryDBForAllTask(char* err, sqlite3* db, sqlite3_stmt* stmt, User user) {
         int emaillen = strlen((char*)userEmail);
         std::string stringEmail(reinterpret_cast<const char*>(userEmail), emaillen);
         
-        if (stringEmail == user.getEmail()) { 
+        if (stringEmail == user.getEmail()) {
 
             int taskNamelen = strlen((char*)taskName);
             std::string stringTaskName(reinterpret_cast<const char*>(taskName), taskNamelen);
@@ -55,7 +55,17 @@ User queryDBForAllTask(char* err, sqlite3* db, sqlite3_stmt* stmt, User user) {
 
             Task task(stringEmail, stringTaskName, stringDueDate, stringDescription);  
 
-            user.addToTasksVector(task); 
+            bool isalreadythere = false;
+
+            for (int i = 0; i < user.tasks.size(); i++) { 
+                if (user.tasks[i].getTaskName() == stringTaskName) {
+                    isalreadythere = true;
+                }
+            }
+
+            if (isalreadythere == false) {
+                user.addToTasksVector(task); 
+            } 
         }
     }
 

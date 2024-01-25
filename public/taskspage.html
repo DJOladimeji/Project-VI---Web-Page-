@@ -67,7 +67,14 @@
         <h1>Tasks List</h1>
     </header>
 
-    <main>
+    <h1>User Tasks:</h1>
+    <!--<p id="userTaskName"></p> 
+    <p id="userTaskDueDate"></p> 
+    <p id="userTaskDescription"></p> -->
+
+    <form id="AddTaskPage" action="" method="GET"><div class="text sign-up-text"><a href="#" onclick="myFunction()">Add task</a></div></form> 
+
+    <!--<main>
         <table>
             <thead>
                 <tr>
@@ -78,19 +85,88 @@
             </thead>
             <tbody>
                 <tr>
-                    <td><a href="Individual_Task_Page.html">Task 1</a></td>
-                    <td>Complete project proposal</td>
-                    <td>2024-01-31</td>
+                    <td><a href="Individual_Task_Page.html"><p id="userTaskName"></p></a></td>
+                    <td><p id="userTaskDescription"></p> </td>
+                    <td><p id="userTaskDueDate"></p></td>
                 </tr>
                 <tr>
                     <td><a href="Individual_Task_Page.html">Task 2</a></td>
                     <td>Review client feedback</td>
                     <td>2024-02-05</td>
-                </tr>
+                </tr>-->
                 <!-- Add more rows as needed -->
+            <!--</tbody>
+        </table>
+    </main>-->
+
+    <main>
+        <table>
+            <thead>
+                <tr>
+                    <th>Task Title</th>
+                    <th>Description</th>
+                    <th>Due Date</th>
+                </tr>
+            </thead>
+            <tbody id="taskTableBody">
+                <!-- Table rows will be dynamically added here -->
             </tbody>
         </table>
     </main>
 
+    <script>
+        function myFunction() {
+        var action = "/AddTaskPage"; 
+        document.getElementById("AddTaskPage").action = action; 
+        document.getElementById("AddTaskPage").submit(); 
+        }
+
+        // Function to update the HTML content with JSON data
+        function updateUserData(data) {
+            const userDataName = document.getElementById('userTaskName');
+            const userDataDueData = document.getElementById('userTaskDueDate');
+            const userDataDescription = document.getElementById('userTaskDescription');
+
+            userDataName.textContent = `Name: ${data.taskName}`; 
+            userDataDescription.textContent = `Description: ${data.taskDescription}`; 
+            userDataDueData.textContent = `Due Date: ${data.taskDueDate}`; 
+        }
+
+        // Fetch JSON data from the server
+        fetch('/login/1')
+    .then(response => response.json())
+    .then(data => {
+        dynamicTaskData.push(data); // Add the fetched data to your array
+        generateTableRows(); // Regenerate the table rows with the new data
+    })
+    .catch(error => console.error('Error fetching data:', error));
+
+var dynamicTaskData = []; 
+
+// Function to dynamically generate table rows based on data
+function generateTableRows() {
+    var tableBody = document.getElementById("taskTableBody");
+    // Clear existing rows
+    tableBody.innerHTML = '';
+
+    dynamicTaskData.forEach(function(data, index) {
+        var row = tableBody.insertRow();
+        var cell1 = row.insertCell(0); 
+        var cell2 = row.insertCell(1); 
+        var cell3 = row.insertCell(2); 
+
+        var taskLink = document.createElement("a");
+        taskLink.href = "Individual_Task_Page.html?id=" + (index + 1); 
+        taskLink.textContent = data.taskName;
+        cell1.appendChild(taskLink);
+
+        cell2.textContent = data.taskDescription;
+        cell3.textContent = data.taskDueDate;
+    });
+}
+
+// Call the function to generate table rows initially
+generateTableRows();
+    </script>
 </body>
 </htm

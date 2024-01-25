@@ -4,13 +4,13 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Add Task</title>
-    <link rel="stylesheet" href="Styles/add_task_styles.css">
+    <link rel="stylesheet" href="styles/add_task_styles.css">
 </head>
 <body>
 
 <div class="container">
     <h2>Add Task</h2>
-    <form action="process_task.php" method="post">
+    <form id="addTaskPage" action="" method="post">
         <div class="form-group"> 
             <label for="taskName">Task Name</label>
             <input type="text" id="taskName" name="taskName" placeholder="Task Name" required>
@@ -26,11 +26,30 @@
             <textarea id="taskDescription" name="taskDescription" placeholder="Description" required></textarea>
         </div>
 
-        <div class="form-group">
+        <div><h4><p style="margin-left: 220px; line-height: 1;"><a href="#" onclick="myFunction()">Add task</a></p></h4></div>
+
+        <!--<div class="form-group">
             <input type="submit" value="Add Task">
-        </div>
+        </div>-->
     </form>
 </div>
+
+<script>
+    function myFunction() {
+        var action = "/addtask/"; 
+        var param = document.getElementById("taskName").value;         
+        param += "/"; 
+        action += param; 
+        var param1 = document.getElementById("dueDate").value; 
+        param1 += "/"; 
+        action += param1; 
+        var param2 = document.getElementById("taskDescription").value; 
+        action += param2; 
+
+        document.getElementById("addTaskPage").action = action; 
+        document.getElementById("addTaskPage").submit(); 
+    }
+</script>
 
 </body>
 </html>

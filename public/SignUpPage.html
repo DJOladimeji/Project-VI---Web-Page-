@@ -18,27 +18,29 @@
             <div class="image-holder">
                 <img src="images/SignUpPage2.jpg" alt="" height="400" width="400">
             </div>
-            <form action="#" id="registrationForm">
+            <form id="signupPage" action=""> 
                 <h3>Sign Up</h3>
                 <div class="form-group">
-                    <input type="text" id="firstName" placeholder="First Name" class="form-control">
-                    <input type="text" id="lastName" placeholder="Last Name" class="form-control">
+                    <input type="text" id="firstName" name="firstName" placeholder="First Name" class="form-control">
+                    <input type="text" id="lastName" name="lastName" placeholder="Last Name" class="form-control">
                 </div>
                 <div class="form-wrapper">
-                    <input type="text" id="email" placeholder="Email Address" class="form-control">
+                    <input type="text" id="email" name="email" placeholder="Email Address" class="form-control">
                     <i class="zmdi zmdi-email"></i>
                 </div>
                 <div class="form-wrapper">
-                    <input type="password" id="password" placeholder="Password" class="form-control">
+                    <input type="password" id="password" name="password" placeholder="Password" class="form-control">
                     <i class="zmdi zmdi-lock"></i>
                 </div>
                 <div class="form-wrapper">
                     <input type="password" id="confirmPassword" placeholder="Confirm Password" class="form-control">
                     <i class="zmdi zmdi-lock"></i>
                 </div>
-                <button type="button" onclick="validateForm()">Register
+                <div><h4><p style="margin-left: 220px; line-height: 1;"><a href="#" onclick="myFunction()">Register</a></p></h4></div>
+
+                <!--<a href="#" button type="button" onclick="myFunction()">Register</a>
                     <i class="zmdi zmdi-arrow-right"></i>
-                </button>
+                </button>-->
             </form>
             <div class="overlay" id="overlay"></div>
             <div class="popup" id="popup">
@@ -49,14 +51,15 @@
     </div>
 
     <script>
-        function validateForm() {
-            var firstName = document.getElementById('firstName').value;
+        function myFunction() {
+            /*var firstName = document.getElementById('firstName').value;
             var lastName = document.getElementById('lastName').value;
             var email = document.getElementById('email').value;
             var password = document.getElementById('password').value;
-            var confirmPassword = document.getElementById('confirmPassword').value;
+            //var confirmPassword = document.getElementById('confirmPassword').value;
+            //confirmPassword === ''
 
-            if (firstName === '' || lastName === '' || email === '' || password === '' || confirmPassword === '') 
+            if (firstName === '' || lastName === '' || email === '' || password === '') 
 			{
                 document.getElementById('overlay').style.display = 'block';
                 document.getElementById('popup').style.display = 'block';
@@ -65,7 +68,11 @@
                 document.getElementById('overlay').style.display = 'none';
                 document.getElementById('popup').style.display = 'none';
                 document.getElementById('registrationForm').submit();
-            }
+            }*/ 
+
+            var action = "/register"; 
+            document.getElementById("signupPage").action = action; 
+            document.getElementById("signupPage").submit(); 
         }
 
         function closePopup() 

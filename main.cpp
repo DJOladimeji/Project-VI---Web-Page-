@@ -13,6 +13,7 @@ using namespace std;
 using namespace crow;
 
 User user; 
+Task forIndividualTask; 
 char* err; 
 sqlite3* userdb; 
 sqlite3_stmt* userstmt; 
@@ -124,9 +125,11 @@ int main()
 			{
 				if (filename == "submit") {
 					std::string submittedEmail = req.url_params.get("email");
+
+                    bool checkingEmail = queryUserEmail(err, userdb, userstmt, submittedEmail);  
 					//res.write("EMAIL"); 
 					//res.end(); 
-					if (submittedEmail == correctEmail) { 
+					if (checkingEmail == true) { 
 						//-------------- 
 							/* ofstream fout;
 							fout.open("cart.txt", ios::app);
@@ -383,8 +386,43 @@ int main()
             }
         });
 
+    app.route_dynamic("/IndividualTask/1").methods("GET"_method)
+        ([]() {
+
+        crow::json::wvalue jsonData; 
+
+        jsonData["taskName"] = forIndividualTask.getTaskName();  
+        jsonData["taskDescription"] = forIndividualTask.getDescription();  
+        jsonData["taskDueDate"] = forIndividualTask.getDueDate();      
+
+        return crow::response(jsonData.dump());
+            });
+
+    CROW_ROUTE(app, "/Individual_Task_Page/<string>") 
+        ([](const crow::request& req, crow::response& res, string taskName) 
+            {
+                forIndividualTask = queryDBForSpecificTask(err, taskdb, taskstmt, taskName, user); 
+
+                string path = "../public/Individual_Task_Page.html";
+
+                ifstream in(path, ifstream::in);
+                if (in) {
+                    ostringstream contents; 
+                    contents << in.rdbuf();   
+                    in.close(); 
+                    res.write(contents.str()); 
+                }
+                else {
+                    res.write("Not Found"); 
+                }
+                res.end();
+        }); 
+
+
+
+
     CROW_ROUTE(app, "/styles/<string>")											//style.css route 
-        ([](const crow::request& req, crow::response& res, string filename)
+        ([](const crow::request& req, crow::response& res, string filename) 
             {
                 string TempPath = "../public/styles/";
                 string path = TempPath + filename;
@@ -401,6 +439,8 @@ int main()
                 }
                 res.end();
             });
+
+
 
     CROW_ROUTE(app, "/images/<string>")											//images route (all images) 
         ([](const crow::request& req, crow::response& res, string filename)

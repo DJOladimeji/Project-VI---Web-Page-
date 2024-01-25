@@ -109,6 +109,8 @@ Task queryDBForSpecificTask(char* err, sqlite3* db, sqlite3_stmt* stmt, string t
             tasks.setTaskName(stringTaskName); 
             tasks.setDueDate(stringDueDate);  
             tasks.setDescription(stringDescription);  
+
+            return tasks; 
         }
 
     }
@@ -142,7 +144,38 @@ bool queryUserLogin(char* err, sqlite3* db, sqlite3_stmt* stmt, User* user) {
 
             user->setFirstName(stringFirstName);
             user->setLastName(StringLastName); 
-     
+            
+            cout << "User is in the Database" << endl;
+            userfound = true;
+            break;
+        }
+    }
+
+    return userfound;
+}
+
+bool queryUserEmail(char* err, sqlite3* db, sqlite3_stmt* stmt, string enteredEmail) {
+    sqlite3_prepare_v2(db, "select email, firstName, lastName, password from User", -1, &stmt, 0);
+
+    const unsigned char* email;
+    const unsigned char* firstName;
+    const unsigned char* lastName;
+    const unsigned char* password;
+
+    bool userfound = false;
+
+    while (sqlite3_step(stmt) != SQLITE_DONE) { 
+        email = sqlite3_column_text(stmt, 0); 
+        firstName = sqlite3_column_text(stmt, 1); 
+        lastName = sqlite3_column_text(stmt, 2); 
+        password = sqlite3_column_text(stmt, 3); 
+
+        int emaillen = strlen((char*)email);
+
+        std::string stringEmail(reinterpret_cast<const char*>(email), emaillen); 
+
+        if (stringEmail == enteredEmail) {     
+            cout << "User is in the Database" << endl; 
             userfound = true;
             break;
         }

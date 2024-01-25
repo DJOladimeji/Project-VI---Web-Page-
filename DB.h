@@ -13,6 +13,7 @@ void addTaskToDB(char* err, sqlite3* db, sqlite3_stmt* stmt, Task task);
 User queryDBForAllTask(char* err, sqlite3* db, sqlite3_stmt* stmt, User user);
 Task queryDBForSpecificTask(char* err, sqlite3* db, sqlite3_stmt* stmt, string task, User user);
 bool queryUserLogin(char* err, sqlite3* db, sqlite3_stmt* stmt, User* user);
+bool queryUserEmail(char* err, sqlite3* db, sqlite3_stmt* stmt, string enterdEmail); 
 void deleteTaskFromDB(char* err, sqlite3* db, sqlite3_stmt* stmt, string task, User user); 
 void deleteUserFromDB(char* err, sqlite3* db, sqlite3_stmt* stmt, string user);  
 void editTask(char* err, sqlite3* db, sqlite3_stmt* stmt, User user, Task task, string newTaskName, string newDueDate, string newDescription);

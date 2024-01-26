@@ -5,8 +5,24 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Add Task</title>
     <link rel="stylesheet" href="styles/add_task_styles.css">
+    <link rel="stylesheet" href="styles/style.css">
+    <script src="scripts/genericDropdown.js"></script>
 </head>
 <body>
+    <header>
+        <img src="images/Logo.png" alt="Logo"/>
+        <input type="text" placeholder="Search..."> 
+        <div class="dropdown">
+            <img src="images/generic_person_image.png" onclick="toggleDropdown()" class="person-image">
+            <div class="dropdown-content" id="myDropdown">
+                <a href="/AddTaskPage">Add Task</a>
+                <a href="#EditTask">Edit Task</a>
+                <a href="#profile">Profile</a>
+                <a href="#settings">Settings</a>
+                <a href="/">Logout</a>
+            </div>
+        </div>
+    </header>
 
 <div class="container">
     <h2>Add Task</h2>
@@ -26,7 +42,19 @@
             <textarea id="taskDescription" name="taskDescription" placeholder="Description" required></textarea>
         </div>
 
-        <div><h4><p style="margin-left: 220px; line-height: 1;"><a href="#" onclick="myFunction()">Add task</a></p></h4></div>
+        <style>
+            div h4 a {
+              display: inline-block;
+              padding: 10px 20px;
+              background-color: #4CAF50;
+              color: #fff;
+              text-decoration: none;
+              border-radius: 5px;
+            }
+          </style>
+          
+
+        <div><h4><p style="margin-left: 240px; line-height: 1;"><a href="#" onclick="myFunction()">Add task</a></p></h4></div>
 
         <!--<div class="form-group">
             <input type="submit" value="Add Task">

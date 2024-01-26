@@ -47,7 +47,7 @@
         <div>
             <h2 style="display: inline;">Due date</h2>
             <span class="edit-link" onclick="editTask('taskDueDate')">Edit</span>
-            <p id="taskDescription"></p>
+            <p1 id="taskDueDate"></p1>
         </div>
     
         <br>
@@ -61,7 +61,7 @@
             <span class="edit-link" onclick="editTask('taskDescription')">Edit</span>
         </div>
         <div class="task" id="Description">
-            <p id="taskDescription"></p>
+            <p2 id="taskDescription"></p2>
         </div>
     </main>
 
@@ -74,12 +74,10 @@
                 document.querySelector('h1').innerText = data.taskName; 
 
                 // Update the due date
-                document.querySelector('#taskDueDate').innerText = data.taskDueDate;
+                document.querySelector('p1').innerText = data.taskDueDate;
 
                 // Update the description
-                document.querySelectorAll('#Description p').forEach((paragraph, index) => {
-                    paragraph.innerText = data.taskDescription[index];
-                });
+                document.querySelector('p2').innerText = data.taskDescription; 
             })
             .catch(error => console.error('Error fetching data:', error));
     </script>

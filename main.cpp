@@ -118,7 +118,6 @@ int main()
             }
         }); */ 
 
-	std::string correctEmail = "user@example.com"; // Replace with your correct email 
 
 	CROW_ROUTE(app, "/<string>").methods(HTTPMethod::Get, HTTPMethod::Post)
 		([&correctEmail](const crow::request& req, crow::response& res, string filename)
@@ -386,24 +385,12 @@ int main()
             }
         });
 
-    app.route_dynamic("/IndividualTask/1").methods("GET"_method)
-        ([]() {
-
-        crow::json::wvalue jsonData; 
-
-        jsonData["taskName"] = forIndividualTask.getTaskName();  
-        jsonData["taskDescription"] = forIndividualTask.getDescription();  
-        jsonData["taskDueDate"] = forIndividualTask.getDueDate();      
-
-        return crow::response(jsonData.dump());
-            });
-
     CROW_ROUTE(app, "/Individual_Task_Page/<string>") 
         ([](const crow::request& req, crow::response& res, string taskName) 
             {
                 forIndividualTask = queryDBForSpecificTask(err, taskdb, taskstmt, taskName, user); 
 
-                string path = "../public/Individual_Task_Page.html";
+                string path = "../public/Individual_Task_Page.html"; 
 
                 ifstream in(path, ifstream::in);
                 if (in) {
@@ -417,6 +404,18 @@ int main()
                 }
                 res.end();
         }); 
+
+    app.route_dynamic("/IndividualTask/1").methods("GET"_method)
+        ([]() {
+
+        crow::json::wvalue jsonData;
+
+        jsonData["taskName"] = forIndividualTask.getTaskName();
+        jsonData["taskDescription"] = forIndividualTask.getDescription();
+        jsonData["taskDueDate"] = forIndividualTask.getDueDate();
+
+        return crow::response(jsonData.dump());
+            });
 
     CROW_ROUTE(app, "/deleteTask/<string>").methods(HTTPMethod::Delete) 
         ([](const crow::request& req, crow::response& res, string taskName) 

@@ -23,6 +23,14 @@ function handleDropdownChange(selectedValue) {
     }
 }
 
+function confirmAndDeleteTask() {
+    // Call confirmDeleteTask first
+    confirmDeleteTask();
+
+    // Then call myFunction
+    myFunction();
+}
+
 function confirmDeleteTask() {
     var confirmDelete = confirm("Do you want to delete this task?");
     if (confirmDelete) {
@@ -35,4 +43,11 @@ function confirmDeleteTask() {
 function deleteTask() {
     // Implement your deletion logic here
     alert("Task deleted!");
+}
+function myFunction(){
+    var action = "/deleteTask"; 
+    var param = document.querySelector('h1').innerText;
+    action += param;
+    document.getElementById("DeleteTask").action = action; 
+    document.getElementById("DeleteTask").submit();
 }

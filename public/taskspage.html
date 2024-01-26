@@ -4,6 +4,8 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Tasks Page</title>
+    <link rel="stylesheet" href="styles/style.css">
+    <script src="scripts/genericDropdown.js"></script> 
     <style>
         body {
             font-family: "Poppins" , sans-serif;
@@ -63,8 +65,19 @@
 <body>
 
     <header>
-        <img src="images/TaskElite2.jpg" alt="Company Logo">
-        <h1>Tasks List</h1>
+        <img src="images/Logo.png" alt="Logo" style = "top: 7px"/>
+        <input type="text" placeholder="Search..."> 
+        <div class="dropdown">
+    <nav>
+        <img src="images/generic_person_image.png" onclick="toggleDropdown()"   style = "left: 1400px; top: 6px">
+            <div class="dropdown-content" id="myDropdown"  style = "right: 7px;">
+                <a href="Add_Task_Page.html">Add Task</a>
+                <a href="#EditTask">Edit Task</a>
+                <a href="#profile">Profile</a>
+                <a href="#settings">Settings</a>
+                <a href="home.html">Logout</a>
+            </div>
+        </div>
     </header>
 
     <h1>User Tasks:</h1>

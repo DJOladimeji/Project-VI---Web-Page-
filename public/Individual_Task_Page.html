@@ -36,7 +36,7 @@
         </div>
     
         <!-- Delete Button -->
-        <button class="delete-button" onclick="confirmDeleteTask()">Delete</button>
+        <form id="DeleteTask" action="" method="DELETE"></form><button class="delete-button" onclick="confirmAndDeleteTask()">Delete</button>
     
         <br>
     
@@ -71,7 +71,7 @@
             .then(response => response.json())
             .then(data => {
                 // Update the title
-                document.querySelector('h1').innerText = data.taskName;
+                document.querySelector('h1').innerText = data.taskName; 
 
                 // Update the due date
                 document.querySelector('#taskDueDate').innerText = data.taskDueDate;

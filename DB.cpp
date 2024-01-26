@@ -33,6 +33,8 @@ User queryDBForAllTask(char* err, sqlite3* db, sqlite3_stmt* stmt, User user) {
     const unsigned char* dueDate;
     const unsigned char* description;
 
+    user.tasks.clear(); 
+
     while (sqlite3_step(stmt) != SQLITE_DONE) { 
         userEmail = sqlite3_column_text(stmt, 0);
         taskName = sqlite3_column_text(stmt, 1);
@@ -57,7 +59,7 @@ User queryDBForAllTask(char* err, sqlite3* db, sqlite3_stmt* stmt, User user) {
 
             bool isalreadythere = false;
 
-            for (int i = 0; i < user.tasks.size(); i++) { 
+            for (int i = 0; i < user.tasks.size(); i++) {
                 if (user.tasks[i].getTaskName() == stringTaskName) {
                     isalreadythere = true;
                 }

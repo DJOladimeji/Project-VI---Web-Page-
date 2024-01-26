@@ -67,65 +67,45 @@ void User::removeFromTaskvector(string taskName) {
 	}
 }
 
-void User::editTaskInVector(string taskName, string newTasKName, string newDueDate, string newDescription) { 
-	auto it = find_if(this->tasks.begin(), this->tasks.end(), [taskName](Task& task) {
-		return task.getTaskName() == taskName;
-		});
+void User::editTaskInVector(string taskName, string newTaskName, string newDueDate, string newDescription) { 
+	for (int i = 0; i < this->tasks.size(); i++) {
+		if (this->tasks[i].getTaskName() == taskName) {
+			this->tasks[i].setTaskName(newTaskName);         
+			this->tasks[i].setDueDate(newDueDate);
+			this->tasks[i].setDescription(newDescription);
 
-	//check if the task was found
-	if (it != this->tasks.end()) {
-		it->setTaskName(newTasKName);
-		it->setTaskName(newDueDate);
-		it->setDescription(newDescription); 
-
-		cout << "Task " << taskName << " has been editetd enterily in the vector" << endl;
-	}
-	else {
-		cout << "Task " << taskName << " was not found in the vector" << endl;
+			cout << "Task " << taskName << " has been editted in the vector" << endl;
+		}
 	}
 }
 
 void User::editTaskNameInVector(string taskName, string newTaskName) {
-	auto it = find_if(this->tasks.begin(), this->tasks.end(), [taskName](Task& task) {
-		return task.getTaskName() == taskName;
-		});
+	for (int i = 0; i < this->tasks.size(); i++) {
+		if (this->tasks[i].getTaskName() == taskName) {
+			this->tasks[i].setTaskName(newTaskName);
 
-	//check if the task was found
-	if (it != this->tasks.end()) {
-		it->setTaskName(newTaskName);
-		cout << "Task " << taskName << " Name, has been editted to " << newTaskName << " in the vector" << endl;
-	}
-	else {
-		cout << "Task " << taskName << " was not found in the vector" << endl;  
+			cout << "Task " << taskName << " Name, has been editted to " << newTaskName << " in the vector" << endl;
+			cout << "Vector size = " << this->tasks.size() << endl;
+		}
 	}
 }
 
 void User::editTaskDueDateInVector(string taskName, string newTaskDueDate) {
-	auto it = find_if(this->tasks.begin(), this->tasks.end(), [taskName](Task& task) {   
-		return task.getTaskName() == taskName;  
-		});
+	for (int i = 0; i < this->tasks.size(); i++) {
+		if (this->tasks[i].getTaskName() == taskName) {
+			this->tasks[i].setDueDate(newTaskDueDate);
 
-	//check if the task was found
-	if (it != this->tasks.end()) { 
-		it->setDueDate(newTaskDueDate);  
-		cout << "Task " << taskName << " Due date, has been editted to " << newTaskDueDate << " in the vector" << endl; 
-	}
-	else {
-		cout << "Task " << taskName << " was not found in the vector" << endl; 
+			cout << "Task " << taskName << " Due Date, has been editted to " << newTaskDueDate << " in the vector" << endl; 
+		}
 	}
 }
 
 void User::editTaskDescriptionInVector(string taskName, string newTaskDescription) {
-	auto it = find_if(this->tasks.begin(), this->tasks.end(), [taskName](Task& task) { 
-		return task.getTaskName() == taskName;
-		});
+	for (int i = 0; i < this->tasks.size(); i++) {
+		if (this->tasks[i].getTaskName() == taskName) { 
+			this->tasks[i].setDescription(newTaskDescription);
 
-	//check if the task was found
-	if (it != this->tasks.end()) {
-		it->setDescription(newTaskDescription); 
-		cout << "Task " << taskName << " Description, has been editted to " << newTaskDescription << " in the vector" << endl;  
-	}
-	else {
-		cout << "Task " << taskName << " was not found in the vector" << endl; 
+			cout << "Task " << taskName << " description, has been editted to " << newTaskDescription << " in the vector" << endl;
+		}
 	}
 }

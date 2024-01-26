@@ -347,7 +347,7 @@ int main()
         return crow::response(jsonData.dump());  
         }); 
 
-    CROW_ROUTE(app, "/<string>/<string>/<string>/<string>").methods(HTTPMethod::Post)
+    CROW_ROUTE(app, "/<string>/<string>/<string>/<string>").methods(HTTPMethod::Post) 
         ([](const crow::request& req, crow::response& res, string filename, string taskName, string dueDate, string taskDescription)
         {
             string post = "POST"; 
@@ -417,6 +417,26 @@ int main()
                 }
                 res.end();
         }); 
+
+    CROW_ROUTE(app, "/deleteTask/<string>").methods(HTTPMethod::Delete) 
+        ([](const crow::request& req, crow::response& res, string taskName) 
+            {
+                deleteTaskFromDB(err, taskdb, taskstmt, taskName, user); 
+
+                string path = "../public/Individual_Task_Page.html";
+
+                ifstream in(path, ifstream::in);
+                if (in) {
+                    ostringstream contents;
+                    contents << in.rdbuf();
+                    in.close();
+                    res.write(contents.str());
+                }
+                else {
+                    res.write("Not Found");
+                }
+                res.end();
+            });
 
 
 

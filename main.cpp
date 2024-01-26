@@ -119,7 +119,7 @@ int main()
         }); */ 
 
 
-	CROW_ROUTE(app, "/<string>").methods(HTTPMethod::Get, HTTPMethod::Post)
+	CROW_ROUTE(app, "/<string>").methods(HTTPMethod::Get, HTTPMethod::Post, HTTPMethod::Patch)
 		([](const crow::request& req, crow::response& res, string filename)
 			{
 				if (filename == "submit") {
@@ -271,7 +271,6 @@ int main()
                         res.end();
                     }
                 }
-
                 else if (filename == "addtask") {
                     cout << "Entered route" << endl;
 
@@ -315,9 +314,7 @@ int main()
                         }
                         res.end(); 
                     } 
-    
                 }
-
                 else if (filename == "Individual_Task_Page") {
                     cout << "Entered route" << endl;
 
@@ -340,7 +337,6 @@ int main()
                     }
                     res.end(); 
                 }
-
                 else if (filename == "register") {
                     std::string firstName = req.url_params.get("firstName");
                     std::string lastName = req.url_params.get("lastName");
@@ -366,6 +362,147 @@ int main()
                         res.write("Not Found");
                     }
                     res.end();
+                }
+                else if (filename == "editTaskName") {
+                    string path = "../public/editTaskNamePage.html"; 
+
+                    ifstream in(path, ifstream::in);
+                    if (in) {
+                        ostringstream contents;
+                        contents << in.rdbuf();
+                        in.close();
+                        res.write(contents.str());
+                    }
+                    else {
+                        res.write("Not Found");
+                    }
+                    res.end(); 
+                }
+                else if (filename == "editTaskDueDate") {
+                    string path = "../public/editTaskDueDatePage.html";
+
+                    ifstream in(path, ifstream::in);
+                    if (in) {
+                        ostringstream contents;
+                        contents << in.rdbuf();
+                        in.close();
+                        res.write(contents.str());
+                    }
+                    else {
+                        res.write("Not Found");
+                    }
+                    res.end();
+                }
+                else if (filename == "editTaskDescription") {
+                    string path = "../public/editTaskDescriptionPage.html";
+
+                    ifstream in(path, ifstream::in);
+                    if (in) {
+                        ostringstream contents;
+                        contents << in.rdbuf();
+                        in.close();
+                        res.write(contents.str());
+                    }
+                    else {
+                        res.write("Not Found");
+                    }
+                    res.end();
+                }
+                if (filename == "newTaskName") {
+                    cout << "Entered edit task name route" << endl; 
+
+                    string patch = "PATCH";
+                    string method = method_name(req.method); 
+                    int resultPost = patch.compare(method);
+
+                    if (resultPost == 0) {
+                        cout << "Entered check patch" << endl;
+
+                        auto json = crow::json::load(req.body);
+
+                        if (!json) {
+                            res.code = 400; // Bad Request
+                            res.write("Error parsing JSON in the request body");
+                            res.end();
+                            return;
+                        }
+
+                        std::string newTaskName = json["newTaskName"].s(); 
+
+                        editTaskNameInDB(err, taskdb, taskstmt, user, forIndividualTask.getTaskName(), newTaskName); 
+
+                        string path = "../public/taskspage.html";
+
+                        ifstream in(path, ifstream::in); 
+                        if (in) {
+                            ostringstream contents;
+                            contents << in.rdbuf();
+                            in.close();
+                            res.write(contents.str());
+                        }
+                        else {
+                            res.write("Not Found");
+                        }
+                        res.end(); 
+                    }
+                }
+                if (filename == "newTaskDueDate") {
+                    cout << "Entered edit task due date route" << endl;
+
+                    string post = "PATCH";
+                    string method = method_name(req.method);
+                    int resultPost = post.compare(method);
+
+                    if (resultPost == 0) {
+                        cout << "Entered check patch" << endl;
+
+                        std::string newTaskDueDate = req.url_params.get("newTaskDueDate");
+
+                        editDuedateInDB(err, taskdb, taskstmt, user, forIndividualTask.getTaskName(), newTaskDueDate); 
+
+                        string path = "../public/taskspage.html";
+
+                        ifstream in(path, ifstream::in);
+                        if (in) {
+                            ostringstream contents;
+                            contents << in.rdbuf();
+                            in.close();
+                            res.write(contents.str());
+                        }
+                        else {
+                            res.write("Not Found");
+                        }
+                        res.end();
+                    }
+                }
+                if (filename == "newTaskDescription") {
+                    cout << "Entered edit task description route" << endl;
+
+                    string post = "PATCH";
+                    string method = method_name(req.method);
+                    int resultPost = post.compare(method);
+
+                    if (resultPost == 0) {
+                        cout << "Entered check patch" << endl;
+
+                        std::string newTaskDescription = req.url_params.get("newTaskName"); 
+
+                        editDescriptionInDB(err, taskdb, taskstmt, user, forIndividualTask.getTaskName(), newTaskDescription); 
+
+                        string path = "../public/taskspage.html";
+
+                        ifstream in(path, ifstream::in);
+                        if (in) {
+                            ostringstream contents;
+                            contents << in.rdbuf();
+                            in.close();
+                            res.write(contents.str());
+                        }
+                        else {
+                            res.write("Not Found");
+                        }
+                        res.end();
+                    }
                 }
 		}); 
 

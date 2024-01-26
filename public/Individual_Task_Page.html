@@ -32,7 +32,7 @@
         <!-- Title Display -->
         <div>
             <h1 style="display: inline; font-size: 50px;"></h1>
-            <span class="edit-link" onclick="editTask('taskTitle')">Edit</span>
+            <form id="editTask1" action="" method="GET"></form><a href="#" onclick="myFunction1()">Edit</a>
         </div>
     
         <!-- Delete Button -->
@@ -46,7 +46,7 @@
         <!-- Due Date display -->
         <div>
             <h2 style="display: inline;">Due date</h2>
-            <span class="edit-link" onclick="editTask('taskDueDate')">Edit</span>
+            <form id="editTask2" action="" method="GET"></form><a href="#" onclick="myFunction2()">Edit</a>
             <p1 id="taskDueDate"></p1>
         </div>
     
@@ -58,7 +58,7 @@
         <!-- Description display Display -->
         <div>
             <h2 style="display: inline;">Description</h2>
-            <span class="edit-link" onclick="editTask('taskDescription')">Edit</span>
+            <form id="editTask3" action="" method="GET"></form><a href="#" onclick="myFunction3()">Edit</a> 
         </div>
         <div class="task" id="Description">
             <p2 id="taskDescription"></p2>
@@ -66,7 +66,24 @@
     </main>
 
     <script>
-            // Fetch JSON data from the server
+        function myFunction1() {
+            var action = "/editTaskName"; 
+            document.getElementById("editTask1").action = action; 
+            document.getElementById("editTask1").submit(); 
+        }
+        function myFunction2() {
+            var action = "/editTaskDueDate"; 
+            document.getElementById("editTask2").action = action; 
+            document.getElementById("editTask2").submit(); 
+        }
+        function myFunction3() {
+            var action = "/editTaskDescription"; 
+            document.getElementById("editTask3").action = action; 
+            document.getElementById("editTask3").submit(); 
+        }
+
+
+        // Fetch JSON data from the server
         fetch('/IndividualTask/1') 
             .then(response => response.json())
             .then(data => {

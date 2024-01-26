@@ -60,7 +60,7 @@ void User::removeFromTaskvector(string taskName) {
 	if (it != this->tasks.end()) {
 		//use erase-remove idiom to delete the task
 		this->tasks.erase(it); 
-		std::cout << "Task " << taskName << " has been reased from vector" << endl;
+		std::cout << "Task " << taskName << " has been erased from vector" << endl;
 	}
 	else {
 		cout << "Task " << taskName << " not found in vector" << endl;
@@ -78,7 +78,7 @@ void User::editTaskInVector(string taskName, string newTasKName, string newDueDa
 		it->setTaskName(newDueDate);
 		it->setDescription(newDescription); 
 
-		cout << "Task " << taskName << " has bee editetd enterily in the vector" << endl;
+		cout << "Task " << taskName << " has been editetd enterily in the vector" << endl;
 	}
 	else {
 		cout << "Task " << taskName << " was not found in the vector" << endl;
@@ -93,7 +93,7 @@ void User::editTaskNameInVector(string taskName, string newTaskName) {
 	//check if the task was found
 	if (it != this->tasks.end()) {
 		it->setTaskName(newTaskName);
-		cout << "Task " << taskName << " Name, has not been editted to " << newTaskName << " in the vector" << endl;
+		cout << "Task " << taskName << " Name, has been editted to " << newTaskName << " in the vector" << endl;
 	}
 	else {
 		cout << "Task " << taskName << " was not found in the vector" << endl;  
@@ -108,7 +108,7 @@ void User::editTaskDueDateInVector(string taskName, string newTaskDueDate) {
 	//check if the task was found
 	if (it != this->tasks.end()) { 
 		it->setDueDate(newTaskDueDate);  
-		cout << "Task " << taskName << " Due date, has not been editted to " << newTaskDueDate << " in the vector" << endl; 
+		cout << "Task " << taskName << " Due date, has been editted to " << newTaskDueDate << " in the vector" << endl; 
 	}
 	else {
 		cout << "Task " << taskName << " was not found in the vector" << endl; 
@@ -123,7 +123,7 @@ void User::editTaskDescriptionInVector(string taskName, string newTaskDescriptio
 	//check if the task was found
 	if (it != this->tasks.end()) {
 		it->setDescription(newTaskDescription); 
-		cout << "Task " << taskName << " Description, has not been editted to " << newTaskDescription << " in the vector" << endl;  
+		cout << "Task " << taskName << " Description, has been editted to " << newTaskDescription << " in the vector" << endl;  
 	}
 	else {
 		cout << "Task " << taskName << " was not found in the vector" << endl; 

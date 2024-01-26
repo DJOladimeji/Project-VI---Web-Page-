@@ -348,7 +348,7 @@ void editDuedateInDB(char* err, sqlite3* db, sqlite3_stmt* stmt, User user, stri
                 std::cerr << "Error updating Due Date: " << sqlite3_errmsg(db) << std::endl;
             }
             else {
-                std::cout << "Du eDate updated successfully." << std::endl;
+                std::cout << "DueDate updated successfully." << std::endl;
 
                 user.editTaskDueDateInVector(task, newDueDate); 
             }

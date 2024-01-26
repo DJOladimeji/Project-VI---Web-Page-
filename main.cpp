@@ -120,7 +120,7 @@ int main()
 
 
 	CROW_ROUTE(app, "/<string>").methods(HTTPMethod::Get, HTTPMethod::Post)
-		([&correctEmail](const crow::request& req, crow::response& res, string filename)
+		([](const crow::request& req, crow::response& res, string filename)
 			{
 				if (filename == "submit") {
 					std::string submittedEmail = req.url_params.get("email");
@@ -271,6 +271,76 @@ int main()
                         res.end();
                     }
                 }
+
+                else if (filename == "addtask") {
+                    cout << "Entered route" << endl;
+
+                    std::string taskName = req.url_params.get("taskName");
+                    std::string dueDate = req.url_params.get("dueDate"); 
+                    std::string taskDescription = req.url_params.get("taskDescription");
+
+
+                    string post = "POST";
+                    string method = method_name(req.method);
+                    int resultPost = post.compare(method);
+
+                    if (resultPost == 0) {
+
+                        cout << "Entered check post" << endl; 
+
+                        /* std::string taskName = req.url_params.get("taskName");
+                        std::string taskDueDate = req.url_params.get("dueDate");
+                        std::string taskDescription = req.url_params.get("taskDescription"); */
+
+                        Task task; 
+                        task.setUserEmail(user.getEmail()); 
+                        task.setTaskName(taskName); 
+                        task.setDueDate(dueDate); 
+                        task.setDescription(taskDescription); 
+
+                        addTaskToDB(err, taskdb, taskstmt, task); 
+                        user.addToTasksVector(task); 
+
+                        string path = "../public/taskspage.html"; 
+
+                        ifstream in(path, ifstream::in); 
+                        if (in) {
+                            ostringstream contents;
+                            contents << in.rdbuf();
+                            in.close();
+                            res.write(contents.str());
+                        }
+                        else {
+                            res.write("Not Found"); 
+                        }
+                        res.end(); 
+                    } 
+    
+                }
+
+                else if (filename == "Individual_Task_Page") {
+                    cout << "Entered route" << endl;
+
+                    std::string taskName = req.url_params.get("taskName"); 
+
+
+                    forIndividualTask = queryDBForSpecificTask(err, taskdb, taskstmt, taskName, user); 
+
+                    string path = "../public/Individual_Task_Page.html"; 
+
+                    ifstream in(path, ifstream::in);
+                    if (in) {
+                        ostringstream contents; 
+                        contents << in.rdbuf(); 
+                        in.close(); 
+                        res.write(contents.str()); 
+                    }
+                    else {
+                        res.write("Not Found"); 
+                    }
+                    res.end(); 
+                }
+
                 else if (filename == "register") {
                     std::string firstName = req.url_params.get("firstName");
                     std::string lastName = req.url_params.get("lastName");
@@ -422,7 +492,7 @@ int main()
             {
                 deleteTaskFromDB(err, taskdb, taskstmt, taskName, user); 
 
-                string path = "../public/Individual_Task_Page.html";
+                string path = "../public/taskpage.html";
 
                 ifstream in(path, ifstream::in);
                 if (in) {

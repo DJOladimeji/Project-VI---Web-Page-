@@ -45,7 +45,7 @@ function deleteTask() {
     alert("Task deleted!");
 }
 function myFunction(){
-    var action = "/deleteTask"; 
+    var action = "/deleteTask/"; 
     var param = document.querySelector('h1').innerText;
     action += param;
     document.getElementById("DeleteTask").action = action; 

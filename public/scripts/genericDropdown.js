@@ -45,9 +45,32 @@ function deleteTask() {
     alert("Task deleted!");
 }
 function myFunction(){
-    var action = "/deleteTask/"; 
-    var param = document.querySelector('h1').innerText;
-    action += param;
+    //var action = "/deleteTask/"; 
+    var action = "/deleteTask"; 
+    //var param = document.querySelector('h1').innerText;
+    //action += param;
     document.getElementById("DeleteTask").action = action; 
     document.getElementById("DeleteTask").submit();
+
+    fetch('/deleteTask', {
+        method: 'DELETE', 
+        headers: {
+            'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ taskName: document.querySelector('h1').innerText }),  
+    })
+    .then(response => {
+        if (!response.ok) {
+            throw new Error('Network response was not ok');
+        }
+        return response.json();
+    })
+    .then(data => {
+        // Handle the response data
+        console.log(data);
+    })
+    .catch(error => {
+        // Handle errors
+        console.error('Error:', error);
+    }); 
 }

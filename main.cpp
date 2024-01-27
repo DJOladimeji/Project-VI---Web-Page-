@@ -119,7 +119,7 @@ int main()
         }); */ 
 
 
-	CROW_ROUTE(app, "/<string>").methods(HTTPMethod::Get, HTTPMethod::Post, HTTPMethod::Patch)
+	CROW_ROUTE(app, "/<string>").methods(HTTPMethod::Get, HTTPMethod::Post, HTTPMethod::Patch, HTTPMethod::Delete)
 		([](const crow::request& req, crow::response& res, string filename)
 			{
 				if (filename == "submit") {
@@ -280,7 +280,6 @@ int main()
                     cout << "Entered route" << endl;
 
                     std::string taskName = req.url_params.get("taskName"); 
-
 
                     forIndividualTask = queryDBForSpecificTask(err, taskdb, taskstmt, taskName, user); 
 
@@ -537,6 +536,52 @@ int main()
                         res.end();
                     }
                 }
+                else if (filename == "deleteTask") {
+                    cout << "Entered delete task route" << endl; 
+
+                    std::string deleteVerb = "DELETE";
+                    std::string method = method_name(req.method); 
+                    int resultDelete = deleteVerb.compare(method); 
+
+                    if (resultDelete == 0) {
+                        cout << "Entered check delete" << endl;
+
+                        auto json = crow::json::load(req.body);
+                        cout << json << endl;
+                        if (!json) {
+                            res.code = 400; // Bad Request
+                            res.write("Error parsing JSON in the request body");
+                            cout << "Error parsing JSON" << endl;
+                            res.end();
+                            return;
+                        }
+                        else {
+                            cout << "JSON is not empty" << endl;
+                            std::string taskName = json["taskName"].s(); 
+
+                            cout << "Task name: " << taskName << endl; 
+
+                            deleteTaskFromDB(err, taskdb, taskstmt, taskName, user); 
+
+                            cout << "Task should have been deleted" << endl; 
+                        } 
+                    }
+                    else if (resultDelete != 0) { 
+                        string path = "../public/taskspage.html";
+
+                        ifstream in(path, ifstream::in);
+                        if (in) {
+                            ostringstream contents;
+                            contents << in.rdbuf();
+                            in.close();
+                            res.write(contents.str());
+                        }
+                        else {
+                            res.write("Not Found");
+                        }
+                        res.end(); 
+                    }
+                }
 		}); 
 
     app.route_dynamic("/login/1").methods("GET"_method)
@@ -594,11 +639,7 @@ int main()
             int resultPost = post.compare(method); 
 
             if (resultPost == 0) {
-                cout << "DAVID" << endl;
-
-                /* std::string taskName = req.url_params.get("taskName");
-                std::string taskDueDate = req.url_params.get("dueDate");
-                std::string taskDescription = req.url_params.get("taskDescription"); */ 
+                cout << "Adding a task route" << endl;
 
                 Task task;
                 task.setUserEmail(user.getEmail());
@@ -660,6 +701,8 @@ int main()
     CROW_ROUTE(app, "/deleteTask/<string>").methods(HTTPMethod::Delete) 
         ([](const crow::request& req, crow::response& res, string taskName) 
             {
+                cout << "Delete route" << endl; 
+
                 deleteTaskFromDB(err, taskdb, taskstmt, taskName, user); 
 
                 string path = "../public/taskpage.html";
@@ -675,7 +718,7 @@ int main()
                     res.write("Not Found");
                 }
                 res.end();
-            });
+        });
 
     CROW_ROUTE(app, "/styles/<string>")											//style.css route 
         ([](const crow::request& req, crow::response& res, string filename) 
@@ -694,7 +737,7 @@ int main()
                     res.write("Not Found");
                 }
                 res.end();
-            });
+        });
 
     CROW_ROUTE(app, "/images/<string>")											//images route (all images) 
         ([](const crow::request& req, crow::response& res, string filename)
@@ -713,7 +756,7 @@ int main()
                     res.write("Not Found");
                 }
                 res.end();
-            });
+        });
 
     CROW_ROUTE(app, "/scripts/<string>")											//scripts route (all scripts) 
         ([](const crow::request& req, crow::response& res, string filename) 
@@ -732,7 +775,7 @@ int main()
                     res.write("Not Found");
                 }
                 res.end();
-            });
+        });
 
 
 		app.port(23500).multithreaded().run();

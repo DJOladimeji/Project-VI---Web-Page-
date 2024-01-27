@@ -339,7 +339,7 @@ int main()
                     }
                     res.end(); 
                 }
-                /* else if (filename == "editTaskDueDate") {
+                else if (filename == "editTaskDueDate") {
                     string path = "../public/editTaskDueDatePage.html";
 
                     ifstream in(path, ifstream::in);
@@ -353,7 +353,7 @@ int main()
                         res.write("Not Found");
                     }
                     res.end();
-                } */ 
+                } 
                 else if (filename == "taskspage") {
                     string path = "../public/taskspage.html";
 
@@ -391,7 +391,6 @@ int main()
                         else{
                             cout << "JSON is not empty" << endl; 
                             std::string newTaskName = json["newTaskName"].s(); 
-                            //std::string firstName = req.url_params.get("newTaskName");
 
                             cout << "New Task Name: " << newTaskName << endl; 
 
@@ -421,20 +420,42 @@ int main()
                         res.end(); 
                     }
                 }
-                /* else if (filename == "newTaskDueDate") {
+                else if (filename == "newTaskDueDate") {
                     cout << "Entered edit task due date route" << endl;
 
-                    string post = "PATCH";
+                    string patch = "PATCH";
                     string method = method_name(req.method);
-                    int resultPost = post.compare(method);
+                    int resultPost = patch.compare(method);
 
                     if (resultPost == 0) {
-                        cout << "Entered check patch" << endl;
+                        cout << "Entered check patch 2" << endl;
 
-                        std::string newTaskDueDate = req.url_params.get("newTaskDueDate");
+                        auto json = crow::json::load(req.body);
+                        cout << json << endl;
+                        if (!json) {
+                            res.code = 400; // Bad Request
+                            res.write("Error parsing JSON in the request body");
+                            cout << "Error parsing JSON" << endl;
+                            res.end();
+                            return;
+                        }
+                        else {
+                            cout << "JSON is not empty" << endl;
+                            std::string newTaskDueDate = json["newTaskDueDate"].s(); 
 
-                        editDuedateInDB(err, taskdb, taskstmt, user, forIndividualTask.getTaskName(), newTaskDueDate); 
+                            cout << "New Task Due Date: " << newTaskDueDate << endl;
 
+                            editDuedateInDB(err, taskdb, taskstmt, user, forIndividualTask.getTaskName(), newTaskDueDate); 
+
+                            cout << "Task due date should have been edited" << endl;
+                        }
+
+                        //const_cast<crow::request&>(req).method = crow::HTTPMethod::GET; 
+                        //cout << method_name(req.method) << endl; 
+                        //res.redirect("/taskspage"); 
+                        //res.end(); 
+                    }
+                    else if (resultPost != 0) {
                         string path = "../public/taskspage.html";
 
                         ifstream in(path, ifstream::in);
@@ -450,35 +471,6 @@ int main()
                         res.end();
                     }
                 }
-                else if (filename == "newTaskDescription") {
-                    cout << "Entered edit task description route" << endl;
-
-                    string post = "PATCH";
-                    string method = method_name(req.method);
-                    int resultPost = post.compare(method);
-
-                    if (resultPost == 0) { 
-                        cout << "Entered check patch" << endl;
-
-                        std::string newTaskDescription = req.url_params.get("newTaskName"); 
-
-                        editDescriptionInDB(err, taskdb, taskstmt, user, forIndividualTask.getTaskName(), newTaskDescription); 
-
-                        string path = "../public/taskspage.html";
-
-                        ifstream in(path, ifstream::in);
-                        if (in) {
-                            ostringstream contents;
-                            contents << in.rdbuf();
-                            in.close();
-                            res.write(contents.str());
-                        }
-                        else {
-                            res.write("Not Found");
-                        }
-                        res.end();
-                    }
-                } */ 
 		}); 
 
     app.route_dynamic("/login/1").methods("GET"_method)

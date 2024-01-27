@@ -379,38 +379,46 @@ int main()
                     if (resultPost == 0) {
                         cout << "Entered check patch" << endl;
 
-                        auto json = crow::json::load(req.body);
-
+                        auto json = crow::json::load(req.body); 
+                        cout << json << endl; 
                         if (!json) {
                             res.code = 400; // Bad Request
                             res.write("Error parsing JSON in the request body");
+                            cout << "Error parsing JSON" << endl; 
                             res.end();
                             return;
                         }
+                        else{
+                            cout << "JSON is not empty" << endl; 
+                            std::string newTaskName = json["newTaskName"].s(); 
+                            //std::string firstName = req.url_params.get("newTaskName");
 
-                        std::string newTaskName = json["newTaskName"].s(); 
+                            cout << "New Task Name: " << newTaskName << endl; 
 
-                        editTaskNameInDB(err, taskdb, taskstmt, user, forIndividualTask.getTaskName(), newTaskName); 
+                            editTaskNameInDB(err, taskdb, taskstmt, user, forIndividualTask.getTaskName(), newTaskName); 
 
-                        const_cast<crow::request&>(req).method = crow::HTTPMethod::GET; 
-                        cout << method_name(req.method) << endl; 
-                        res.redirect("/taskspage"); 
-                        res.end(); 
+                            cout << "Task name should have been edited" << endl;
+                        }
 
-                        /* string path = "../public/taskspage.html";
+                        //const_cast<crow::request&>(req).method = crow::HTTPMethod::GET; 
+                        //cout << method_name(req.method) << endl; 
+                        //res.redirect("/taskspage"); 
+                        //res.end(); 
+                    }
+                    else if (resultPost != 0) {
+                        string path = "../public/taskspage.html";
 
-                        ifstream in(path, ifstream::in); 
+                        ifstream in(path, ifstream::in);
                         if (in) {
                             ostringstream contents;
                             contents << in.rdbuf();
-                            in.close();
-                            res.write(contents.str()); 
-                            cout << "It should load" << endl; 
+                            in.close(); 
+                            res.write(contents.str());  
+                        } 
+                        else { 
+                            res.write("Not Found"); 
                         }
-                        else {
-                            res.write("Not Found");
-                        }
-                        res.end(); */ 
+                        res.end(); 
                     }
                 }
                 /* else if (filename == "newTaskDueDate") {

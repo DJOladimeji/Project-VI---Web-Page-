@@ -69,7 +69,7 @@
             headers: {
                 'Content-Type': 'application/json',
             },
-            body: JSON.stringify({ "newTaskName": newTaskName }),
+            body: JSON.stringify({ newTaskName: document.getElementById("newTaskName").value }), 
         })
         .then(response => {
             if (!response.ok) {

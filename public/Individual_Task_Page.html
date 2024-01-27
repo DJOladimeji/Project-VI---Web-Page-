@@ -38,6 +38,9 @@
         <!-- Delete Button -->
         <form id="DeleteTask" action="" method="DELETE"><button class="delete-button" onclick="confirmAndDeleteTask()">Delete</button></form> 
     
+        <!-- Edit all task information -->
+        <form id="editAllTask" action="" method="GET"><button class="edit-button" onclick="myFunction4()">Edit all task information</button></form> 
+
         <br>
     
         <!-- Horizontal Line -->
@@ -81,7 +84,11 @@
             document.getElementById("editTask3").action = action; 
             document.getElementById("editTask3").submit(); 
         }
-
+        function myFunction4() {
+            var action = "/editAllTask"; 
+            document.getElementById("editAllTask").action = action; 
+            document.getElementById("editAllTask").submit(); 
+        }
 
         // Fetch JSON data from the server
         fetch('/IndividualTask/1') 

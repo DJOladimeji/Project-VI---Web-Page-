@@ -59,10 +59,13 @@
         .catch(error => console.error('Error fetching data:', error));
 
     function myFunction() {
-        var newTaskName = document.getElementById('newTaskName').value;
+        //var newTaskName = document.getElementById('/newTaskName').value;
+        var action = "/newTaskName"; 
+            document.getElementById("editTaskNamePage").action = action; 
+            document.getElementById("editTaskNamePage").submit(); 
 
         fetch('/newTaskName', {
-            method: 'PATCH',
+            method: 'PATCH', 
             headers: {
                 'Content-Type': 'application/json',
             },
@@ -81,7 +84,7 @@
         .catch(error => {
             // Handle errors
             console.error('Error:', error);
-        });
+        }); 
     }
     </script>
 </div>

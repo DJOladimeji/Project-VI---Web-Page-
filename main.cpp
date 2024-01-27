@@ -126,44 +126,21 @@ int main()
 					std::string submittedEmail = req.url_params.get("email");
 
                     bool checkingEmail = queryUserEmail(err, userdb, userstmt, submittedEmail);  
-					//res.write("EMAIL"); 
-					//res.end(); 
+
 					if (checkingEmail == true) { 
-						//-------------- 
-							/* ofstream fout;
-							fout.open("cart.txt", ios::app);
-							if (fout.is_open()) {
-								fout << "CORRECT: " << submittedEmail << endl; 
+						string path = "../public/SignInPage.html";
 
-								res.code = OK;
-								fout.close();
-							}
-							else
-							{
-								res.code = INVALID;
-								res.set_header("Content-Type", "text/plain");
-								res.write("Could not open file");
-							}
-
-							res.end(); */ 
-
-							string path = "../public/SignInPage.html";
-
-							ifstream in(path, ifstream::in);
-							if (in) {
-								ostringstream contents;
-								contents << in.rdbuf();
-								in.close();
-								res.write(contents.str());
-							}
-							else {
-								res.write("Not Found");
-							}
-							res.end(); 
-
-							
-							/* res.redirect("/SignInPage");
-							res.end(); */ 
+						ifstream in(path, ifstream::in);
+						if (in) {
+							ostringstream contents;
+							contents << in.rdbuf();
+							in.close();
+							res.write(contents.str());
+						}
+						else {
+							res.write("Not Found");
+						}
+						res.end(); 
 					}
 					else { 
 					    // Redirect to the signup page
@@ -180,12 +157,6 @@ int main()
 						    res.write("Not Found");
 					    }
 					    res.end();
-
-					//return crow::response(301).set_header("Location", "/Signup.html");
-
-					//--------------
-					/* res.redirect("/SignUpPage.html");
-					res.end(); */ 
 					}
 				}
 				else if (filename == "SignUpPage.html") { 
@@ -202,16 +173,6 @@ int main()
 					    res.write("Not Found");
 				    }
 				    res.end(); 
-				//string username = "Gurjit"; 
-
-				//crow::mustache::context ctx; 
-				//ctx["username"] = username;
-
-				// Respond with a template that embeds the username in the HTML
-				//return crow::mustache::load("Login.html").render(ctx); 
-				//return crow::response(crow::mustache::load("Login.html", ctx)); 
-
-				//return crow::mustache::load("Login.html").render({{"username", username}}); 
 				} 
                 else if (filename == "AddTaskPage") {
                     string path = "../public/Add_Task_Page.html";
@@ -378,7 +339,7 @@ int main()
                     }
                     res.end(); 
                 }
-                else if (filename == "editTaskDueDate") {
+                /* else if (filename == "editTaskDueDate") {
                     string path = "../public/editTaskDueDatePage.html";
 
                     ifstream in(path, ifstream::in);
@@ -392,9 +353,9 @@ int main()
                         res.write("Not Found");
                     }
                     res.end();
-                }
-                else if (filename == "editTaskDescription") {
-                    string path = "../public/editTaskDescriptionPage.html";
+                } */ 
+                else if (filename == "taskspage") {
+                    string path = "../public/taskspage.html";
 
                     ifstream in(path, ifstream::in);
                     if (in) {
@@ -407,13 +368,13 @@ int main()
                         res.write("Not Found");
                     }
                     res.end();
-                }
-                if (filename == "newTaskName") {
+                } 
+                else if (filename == "newTaskName") {
                     cout << "Entered edit task name route" << endl; 
 
                     string patch = "PATCH";
                     string method = method_name(req.method); 
-                    int resultPost = patch.compare(method);
+                    int resultPost = patch.compare(method); 
 
                     if (resultPost == 0) {
                         cout << "Entered check patch" << endl;
@@ -431,22 +392,28 @@ int main()
 
                         editTaskNameInDB(err, taskdb, taskstmt, user, forIndividualTask.getTaskName(), newTaskName); 
 
-                        string path = "../public/taskspage.html";
+                        const_cast<crow::request&>(req).method = crow::HTTPMethod::GET; 
+                        cout << method_name(req.method) << endl; 
+                        res.redirect("/taskspage"); 
+                        res.end(); 
+
+                        /* string path = "../public/taskspage.html";
 
                         ifstream in(path, ifstream::in); 
                         if (in) {
                             ostringstream contents;
                             contents << in.rdbuf();
                             in.close();
-                            res.write(contents.str());
+                            res.write(contents.str()); 
+                            cout << "It should load" << endl; 
                         }
                         else {
                             res.write("Not Found");
                         }
-                        res.end(); 
+                        res.end(); */ 
                     }
                 }
-                if (filename == "newTaskDueDate") {
+                /* else if (filename == "newTaskDueDate") {
                     cout << "Entered edit task due date route" << endl;
 
                     string post = "PATCH";
@@ -475,14 +442,14 @@ int main()
                         res.end();
                     }
                 }
-                if (filename == "newTaskDescription") {
+                else if (filename == "newTaskDescription") {
                     cout << "Entered edit task description route" << endl;
 
                     string post = "PATCH";
                     string method = method_name(req.method);
                     int resultPost = post.compare(method);
 
-                    if (resultPost == 0) {
+                    if (resultPost == 0) { 
                         cout << "Entered check patch" << endl;
 
                         std::string newTaskDescription = req.url_params.get("newTaskName"); 
@@ -503,7 +470,7 @@ int main()
                         }
                         res.end();
                     }
-                }
+                } */ 
 		}); 
 
     app.route_dynamic("/login/1").methods("GET"_method)
@@ -644,9 +611,6 @@ int main()
                 res.end();
             });
 
-
-
-
     CROW_ROUTE(app, "/styles/<string>")											//style.css route 
         ([](const crow::request& req, crow::response& res, string filename) 
             {
@@ -665,8 +629,6 @@ int main()
                 }
                 res.end();
             });
-
-
 
     CROW_ROUTE(app, "/images/<string>")											//images route (all images) 
         ([](const crow::request& req, crow::response& res, string filename)
@@ -709,4 +671,4 @@ int main()
 
 		app.port(23500).multithreaded().run();
 	return 1;
-}
+} 

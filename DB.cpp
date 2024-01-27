@@ -414,3 +414,27 @@ void editDescriptionInDB(char* err, sqlite3* db, sqlite3_stmt* stmt, User user, 
 
     std::cout << "Task not found." << std::endl;
 }
+
+std::string urlDecode(const std::string& input) {
+    std::ostringstream decoded;
+    for (std::size_t i = 0; i < input.length(); ++i) {
+        if (input[i] == '+') {
+            decoded << ' ';
+        }
+        else if (input[i] == '%' && i + 2 < input.length()) {
+            int hexValue;
+            std::istringstream hexStream(input.substr(i + 1, 2));
+            if (hexStream >> std::hex >> hexValue) {
+                decoded << static_cast<char>(hexValue);
+                i += 2;
+            }
+            else {
+                decoded << input[i];
+            }
+        }
+        else {
+            decoded << input[i];
+        }
+    }
+    return decoded.str();
+} 

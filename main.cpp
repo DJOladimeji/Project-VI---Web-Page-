@@ -9,6 +9,7 @@
 #include <sstream>
 #include "DB.h"
 #include <vector>
+#include <iomanip>
 using namespace std;
 using namespace crow;
 
@@ -641,11 +642,14 @@ int main()
             if (resultPost == 0) {
                 cout << "Adding a task route" << endl;
 
+                std::string decodedTaskName = urlDecode(taskName); 
+                std::string decodedTaskDescription = urlDecode(taskDescription); 
+
                 Task task;
                 task.setUserEmail(user.getEmail());
-                task.setTaskName(taskName);
+                task.setTaskName(decodedTaskName);
                 task.setDueDate(dueDate); 
-                task.setDescription(taskDescription);
+                task.setDescription(decodedTaskDescription); 
 
                 addTaskToDB(err, taskdb, taskstmt, task);
                 user.addToTasksVector(task);

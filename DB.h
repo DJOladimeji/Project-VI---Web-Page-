@@ -5,6 +5,8 @@
 #include "DB.h"
 #include "User.h"
 #include"Task.h"
+#include <iomanip>
+#include <sstream>
 
 using namespace std;
 
@@ -20,3 +22,4 @@ void editTask(char* err, sqlite3* db, sqlite3_stmt* stmt, User user, Task task, 
 void editTaskNameInDB(char* err, sqlite3* db, sqlite3_stmt* stmt, User user, string task, string newTaskName);
 void editDuedateInDB(char* err, sqlite3* db, sqlite3_stmt* stmt, User user, string task, string newDueDate);
 void editDescriptionInDB(char* err, sqlite3* db, sqlite3_stmt* stmt, User user, string task, string newDescription); 
+std::string urlDecode(const std::string& input); 

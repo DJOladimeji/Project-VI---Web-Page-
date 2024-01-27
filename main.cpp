@@ -354,6 +354,21 @@ int main()
                     }
                     res.end();
                 } 
+                else if (filename == "editTaskDescription") {
+                    string path = "../public/editTaskDescriptionPage.html";
+
+                    ifstream in(path, ifstream::in);
+                    if (in) {
+                        ostringstream contents;
+                        contents << in.rdbuf();
+                        in.close();
+                        res.write(contents.str());
+                    }
+                    else {
+                        res.write("Not Found");
+                    }
+                    res.end(); 
+                }
                 else if (filename == "taskspage") {
                     string path = "../public/taskspage.html";
 
@@ -448,6 +463,57 @@ int main()
                             editDuedateInDB(err, taskdb, taskstmt, user, forIndividualTask.getTaskName(), newTaskDueDate); 
 
                             cout << "Task due date should have been edited" << endl;
+                        }
+
+                        //const_cast<crow::request&>(req).method = crow::HTTPMethod::GET; 
+                        //cout << method_name(req.method) << endl; 
+                        //res.redirect("/taskspage"); 
+                        //res.end(); 
+                    }
+                    else if (resultPost != 0) {
+                        string path = "../public/taskspage.html";
+
+                        ifstream in(path, ifstream::in);
+                        if (in) {
+                            ostringstream contents;
+                            contents << in.rdbuf();
+                            in.close();
+                            res.write(contents.str());
+                        }
+                        else {
+                            res.write("Not Found");
+                        }
+                        res.end();
+                    }
+                }
+                else if (filename == "newTaskDescription") {
+                    cout << "Entered edit task description route" << endl;
+
+                    string patch = "PATCH";
+                    string method = method_name(req.method);
+                    int resultPost = patch.compare(method);
+
+                    if (resultPost == 0) {
+                        cout << "Entered check patch 3" << endl;
+
+                        auto json = crow::json::load(req.body);
+                        cout << json << endl;
+                        if (!json) {
+                            res.code = 400; // Bad Request
+                            res.write("Error parsing JSON in the request body");
+                            cout << "Error parsing JSON" << endl;
+                            res.end();
+                            return;
+                        }
+                        else {
+                            cout << "JSON is not empty" << endl; 
+                            std::string newTaskDescription = json["newTaskDescription"].s(); 
+
+                            cout << "New Task Description: " << newTaskDescription << endl;
+
+                            editDescriptionInDB(err, taskdb, taskstmt, user, forIndividualTask.getTaskName(), newTaskDescription); 
+
+                            cout << "Task description should have been edited" << endl;
                         }
 
                         //const_cast<crow::request&>(req).method = crow::HTTPMethod::GET; 

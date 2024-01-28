@@ -60,15 +60,20 @@
 
 <script>
     function myFunction() {
-        var action = "/addtask/"; 
-        var param = document.getElementById("taskName").value;         
-        param += "/"; 
+
+
+        var action = "/addtask?"; 
+        var param = encodeURIComponent(document.getElementById("taskName").value);
+        var param1 = encodeURIComponent(document.getElementById("dueDate").value);
+        var param2 = encodeURIComponent(document.getElementById("taskDescription").value);
+        action += "taskName=" + param + "&dueDate=" + param1 + "&taskDescription=" + param2;     
+        /*param += "/"; 
         action += param; 
         var param1 = document.getElementById("dueDate").value; 
         param1 += "/"; 
         action += param1; 
         var param2 = document.getElementById("taskDescription").value; 
-        action += param2;
+        action += param2;*/
 
         document.getElementById("addTaskPage").action = action; 
         document.getElementById("addTaskPage").submit(); 

@@ -234,11 +234,7 @@ int main()
                     }
                 }
                 else if (filename == "addtask") {
-                    cout << "Entered route" << endl;
-
-                    std::string taskName = req.url_params.get("taskName");
-                    std::string dueDate = req.url_params.get("dueDate"); 
-                    std::string taskDescription = req.url_params.get("taskDescription");
+                    cout << "Entered add task route" << endl;
 
 
                     string post = "POST";
@@ -249,15 +245,30 @@ int main()
 
                         cout << "Entered check post" << endl; 
 
-                        /* std::string taskName = req.url_params.get("taskName");
-                        std::string taskDueDate = req.url_params.get("dueDate");
-                        std::string taskDescription = req.url_params.get("taskDescription"); */
+                        std::string taskName = req.url_params.get("taskName"); 
+                        std::string taskDueDate = req.url_params.get("dueDate");  
+                        std::string taskDescription = req.url_params.get("taskDescription"); 
+
+                        /*auto json = crow::json::load(req.body);
+
+                        if (!json) {
+                            res.code = 400; // Bad Request
+                            res.write("Error parsing JSON in the request body");
+                            res.end();
+                            return;
+                        }
+
+                        std::string taskName = json["taskName"].s();
+                        std::string taskDueDate = json["dueDate"].s(); 
+                        std::string taskDescription = json["taskDescription"].s();*/
+                         
+
 
                         Task task; 
                         task.setUserEmail(user.getEmail()); 
-                        task.setTaskName(taskName); 
-                        task.setDueDate(dueDate); 
-                        task.setDescription(taskDescription); 
+                        task.setTaskName(taskName);  
+                        task.setDueDate(taskDueDate);      
+                        task.setDescription(taskDescription);   
 
                         addTaskToDB(err, taskdb, taskstmt, task); 
                         user.addToTasksVector(task); 
@@ -627,9 +638,7 @@ int main()
                             cout << "New task due date: " << newTaskDueDate << endl; 
                             cout << "New task description: " << newTaskDescription << endl; 
 
-                            editTaskNameInDB(err, taskdb, taskstmt, user, forIndividualTask.getTaskName(), newTaskName); 
-                            editDuedateInDB(err, taskdb, taskstmt, user, forIndividualTask.getTaskName(), newTaskDueDate); 
-                            editDescriptionInDB(err, taskdb, taskstmt, user, forIndividualTask.getTaskName(), newTaskDescription); 
+                            editTask(err, taskdb, taskstmt, user, forIndividualTask, newTaskName, newTaskDueDate, newTaskDescription); 
 
                             cout << "Task information should have been edited" << endl; 
                         } 
@@ -650,6 +659,27 @@ int main()
                         res.end();
                     }
                 }
+
+                else if (filename == "loadTaskPage") {
+
+                    //std::string newTaskName = req.url_params.get("newTaskName");
+
+                    //editTaskNameInDB(err, taskdb, taskstmt, user, forIndividualTask.getTaskName(), newTaskName);
+
+                    string path = "../public/taskspage.html";
+
+                    ifstream in(path, ifstream::in);
+                    if (in) {
+                        ostringstream contents;
+                        contents << in.rdbuf();
+                        in.close();
+                        res.write(contents.str());
+                    }
+                    else {
+                        res.write("Not Found");
+                    }
+                    res.end();
+                    }
 		}); 
 
     app.route_dynamic("/login/1").methods("GET"_method)

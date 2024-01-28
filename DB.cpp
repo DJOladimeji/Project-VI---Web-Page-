@@ -26,6 +26,13 @@ void addTaskToDB(char* err, sqlite3* db, sqlite3_stmt* stmt, Task task) {
 }
 
 User queryDBForAllTask(char* err, sqlite3* db, sqlite3_stmt* stmt, User user) {
+
+    cout << endl;
+    cout << "+++++++++++++++++++++++++++++++" << endl;
+    cout << "DB has been queried for all tasks" << endl;
+    cout << "+++++++++++++++++++++++++++++++" << endl; 
+    cout << endl;
+
     sqlite3_prepare_v2(db, "select userEmail, taskName, dueDate, description from Task", -1, &stmt, 0);
  
     const unsigned char* userEmail;

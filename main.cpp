@@ -20,7 +20,7 @@ sqlite3* userdb;
 sqlite3_stmt* userstmt; 
 sqlite3* taskdb; 
 sqlite3_stmt* taskstmt; 
-
+bool userLoggedIn = false; 
 int main()
 {
     //---------------------------------------------------------------------DB setup-----------------------------------------------------------------------------------
@@ -120,7 +120,7 @@ int main()
         }); */ 
 
 
-	CROW_ROUTE(app, "/<string>").methods(HTTPMethod::Get, HTTPMethod::Post, HTTPMethod::Patch, HTTPMethod::Delete, HTTPMethod::Put) 
+	CROW_ROUTE(app, "/<string>").methods(HTTPMethod::Get, HTTPMethod::Post, HTTPMethod::Patch, HTTPMethod::Delete, HTTPMethod::Put, HTTPMethod::Options)
 		([](const crow::request& req, crow::response& res, string filename)
 			{
 				if (filename == "submit") {
@@ -202,6 +202,14 @@ int main()
 
                     if (userFound)
                     {
+
+                        if (userLoggedIn == false) {
+                           user = queryDBForAllTask( err, taskdb, taskstmt, user); 
+                        }
+                        if (userLoggedIn == false) {
+                            userLoggedIn = true; 
+                        }
+
                         string path = "../public/taskspage.html";
 
                         ifstream in(path, ifstream::in);
@@ -589,6 +597,7 @@ int main()
                             cout << "Task name: " << taskName << endl; 
 
                             deleteTaskFromDB(err, taskdb, taskstmt, taskName, user); 
+                            user = queryDBForAllTask(err, taskdb, taskstmt, user); 
 
                             cout << "Task should have been deleted" << endl; 
                         } 
@@ -679,7 +688,41 @@ int main()
                         res.write("Not Found");
                     }
                     res.end();
+                }
+
+                else if (filename == "sortByName") {  
+                    cout << "Went into sort by Name route" << endl;
+
+                    user.sortTaskvectorByName(); 
+
+                    for (int i = 0; i < user.tasks.size(); i++) {
+                        cout << "taskName: " << user.tasks[i].getTaskName() << endl;
                     }
+                    res.end();
+                } 
+
+                else if (filename == "sortByDate") {
+
+                    user.sortTaskvectorByDate();
+
+                    for (int i = 0; i < user.tasks.size(); i++) {
+                        cout << "Due date: " << user.tasks[i].getDueDate() << endl;
+                    }
+
+                    string path = "../public/taskspage.html";
+
+                    ifstream in(path, ifstream::in);
+                    if (in) {
+                        ostringstream contents;
+                        contents << in.rdbuf();
+                        in.close();
+                        res.write(contents.str());
+                    }
+                    else {
+                        res.write("Not Found");
+                    }
+                    res.end();
+                }
 		}); 
 
     app.route_dynamic("/login/1").methods("GET"_method)
@@ -688,7 +731,7 @@ int main()
 
         crow::json::wvalue jsonData; 
 
-        user = queryDBForAllTask(err, taskdb, taskstmt, user);
+        //user = queryDBForAllTask(err, taskdb, taskstmt, user);
         string taskName, taskDescription, taskDueDate; 
         vector <string> vectTaskName; 
         vector <string> vectTaskDescription;
@@ -698,7 +741,10 @@ int main()
         {
             taskName = user.tasks[i].getTaskName(); 
             taskDescription = user.tasks[i].getDescription(); 
-            taskDueDate = user.tasks[i].getDueDate(); 
+            taskDueDate = user.tasks[i].getDueDate();
+
+            cout << "Task Name in login/1 route: " << user.tasks[i].getTaskName() << endl; 
+            cout << "Task Due date in login/1 route: " << user.tasks[i].getDueDate() << endl;
 
             vectTaskName.push_back(taskName); 
             vectTaskDescription.push_back(taskDescription); 

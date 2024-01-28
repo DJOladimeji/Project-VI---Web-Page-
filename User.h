@@ -3,6 +3,7 @@
 using namespace std;
 #include "Task.h"
 #include <vector>
+#include <string>
 #include <algorithm>
 
 class User {
@@ -30,4 +31,11 @@ public:
 	void editTaskNameInVector(string taskName, string newTaskName);
 	void editTaskDueDateInVector(string taskName, string newTaskDueDate);
 	void editTaskDescriptionInVector(string taskName, string newTaskDescription);  
+	void sortTaskvectorByName(); 
+	void sortTaskvectorByDate(); 
+
+
+	static bool compareDates(const std::string& date1, const std::string& date2) {
+		return date1 < date2;
+	}
 };

@@ -95,7 +95,15 @@
                 <a href="/">Logout</a>
             </div>
         </div>
+
     </header>
+
+    <button onclick="toggleDropdown2()" class="delete-button">Sort Options</button>
+
+    <div id="dropdown" style="display: none;">
+        <button onclick="sortBy('Name')" class="delete-button" style="top: 150px;">Sort by Name</button>
+        <button onclick="sortBy('Date')" class="delete-button" style="top: 150px; right: 150px">Sort by Date</button>
+    </div>
 
     <h1>User Tasks:</h1>
     <!--<p id="userTaskName"></p> 

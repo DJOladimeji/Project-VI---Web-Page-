@@ -109,3 +109,68 @@ void User::editTaskDescriptionInVector(string taskName, string newTaskDescriptio
 		}
 	}
 }
+
+void User::sortTaskvectorByName() {
+
+	cout << "User objeect function sortTaskByName() was called" << endl;
+	vector <string> taskNames;
+	vector <Task> newTaskVector;
+
+	for (int i = 0; i < tasks.size(); i++) {
+		taskNames.push_back(this->tasks[i].getTaskName()); 
+	}
+	 
+	std::sort(taskNames.begin(), taskNames.end());    
+
+	for (int i = 0; i < taskNames.size(); i++) {
+		for (int k = 0; k < this->tasks.size(); k++) {
+			if (this->tasks[k].getTaskName() == taskNames[i]) {
+				Task temp;
+				temp.setTaskName(taskNames[i]);
+				temp.setUserEmail(this->tasks[k].getUserEmail());
+				temp.setDueDate(this->tasks[k].getDueDate());
+				temp.setDescription(this->tasks[k].getDescription()); 
+
+				newTaskVector.push_back(temp);
+			}
+		}
+	}
+
+	this->tasks.clear();
+
+	for (int j = 0; j < newTaskVector.size(); j++) {
+		this->tasks.push_back(newTaskVector[j]); 
+	}
+}
+void User::sortTaskvectorByDate() {
+	cout << "User objeect function sortTaskByName() was called" << endl;
+	vector <string> taskDueDates; 
+	vector <Task> newTaskVector; 
+
+	for (int i = 0; i < tasks.size(); i++) {
+		taskDueDates.push_back(this->tasks[i].getDueDate()); 
+	}
+
+	std::sort(taskDueDates.begin(), taskDueDates.end(), compareDates); 
+
+	for (int i = 0; i < taskDueDates.size(); i++) { 
+		for (int k = 0; k < this->tasks.size(); k++) { 
+			if (this->tasks[k].getDueDate() == taskDueDates[i]) { 
+				Task temp;
+				temp.setDueDate(taskDueDates[i]);
+				temp.setUserEmail(this->tasks[k].getUserEmail());
+				temp.setTaskName(this->tasks[k].getTaskName()); 
+				temp.setDescription(this->tasks[k].getDescription()); 
+
+				newTaskVector.push_back(temp); 
+				break;
+			}
+		}
+	}
+
+	this->tasks.clear();
+
+	for (int j = 0; j < newTaskVector.size(); j++) {
+		this->tasks.push_back(newTaskVector[j]);
+	}
+}

@@ -230,17 +230,17 @@ int main()
 
                     if (resultPost == 0) {
 
-                        cout << "Entered check post" << endl; 
+                        //cout << "Entered check post" << endl; 
 
                         std::string taskName = req.url_params.get("taskName"); 
                         std::string taskDueDate = req.url_params.get("dueDate");  
                         std::string taskDescription = req.url_params.get("taskDescription"); 
 
-                        Task task; 
-                        task.setUserEmail(user.getEmail()); 
+                        Task task(user.getEmail(), taskName, taskDueDate, taskDescription); 
+                        /*task.setUserEmail(user.getEmail());
                         task.setTaskName(taskName);  
                         task.setDueDate(taskDueDate);      
-                        task.setDescription(taskDescription);   
+                        task.setDescription(taskDescription);*/ 
 
                         addTaskToDB(err, taskdb, taskstmt, task); 
                         user.addToTasksVector(task); 
@@ -284,15 +284,15 @@ int main()
                 else if (filename == "register") {
                     cout << "Entered register route" << endl; 
 
-                    cout << "Entered rester route" << endl;
+                    //cout << "Entered rester route" << endl;
                     std::string firstName = req.url_params.get("firstName");
-                    cout << "First Name: " << firstName << endl;
+                    //cout << "First Name: " << firstName << endl;
                     std::string lastName = req.url_params.get("lastName");
-                    cout << "Last Name: " << lastName << endl; 
+                    //cout << "Last Name: " << lastName << endl; 
                     std::string passedEmail2 = req.url_params.get("email"); 
-                    cout << "Email: " << passedEmail2 << endl;  
+                    //cout << "Email: " << passedEmail2 << endl;  
                     std::string passedPassword2 = req.url_params.get("password"); 
-                    cout << "Password: " << passedPassword2 << endl;
+                    //cout << "Password: " << passedPassword2 << endl;
 
                     user.setEmail(passedEmail2);
                     user.setFirstName(firstName);

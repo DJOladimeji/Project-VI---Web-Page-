@@ -236,11 +236,11 @@ int main()
                         std::string taskDueDate = req.url_params.get("dueDate");  
                         std::string taskDescription = req.url_params.get("taskDescription"); 
 
-                        Task task(user.getEmail(), taskName, taskDueDate, taskDescription); 
-                        /*task.setUserEmail(user.getEmail());
+                        Task task; 
+                        task.setUserEmail(user.getEmail());
                         task.setTaskName(taskName);  
                         task.setDueDate(taskDueDate);      
-                        task.setDescription(taskDescription);*/ 
+                        task.setDescription(taskDescription);
 
                         addTaskToDB(err, taskdb, taskstmt, task); 
                         user.addToTasksVector(task); 

@@ -257,21 +257,6 @@ int main()
                         std::string taskDueDate = req.url_params.get("dueDate");  
                         std::string taskDescription = req.url_params.get("taskDescription"); 
 
-                        /*auto json = crow::json::load(req.body);
-
-                        if (!json) {
-                            res.code = 400; // Bad Request
-                            res.write("Error parsing JSON in the request body");
-                            res.end();
-                            return;
-                        }
-
-                        std::string taskName = json["taskName"].s();
-                        std::string taskDueDate = json["dueDate"].s(); 
-                        std::string taskDescription = json["taskDescription"].s();*/
-                         
-
-
                         Task task; 
                         task.setUserEmail(user.getEmail());
                         task.setTaskName(taskName);  

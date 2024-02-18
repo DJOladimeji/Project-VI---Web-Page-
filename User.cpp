@@ -60,7 +60,6 @@ void User::removeFromTaskvector(string taskName) {
 	if (it != this->tasks.end()) {
 		//use erase-remove idiom to delete the task
 		this->tasks.erase(it); 
-		std::cout << "Task " << taskName << " has been erased from vector" << endl;
 	}
 	else {
 		cout << "Task " << taskName << " not found in vector" << endl;
@@ -73,8 +72,6 @@ void User::editTaskInVector(string taskName, string newTaskName, string newDueDa
 			this->tasks[i].setTaskName(newTaskName);         
 			this->tasks[i].setDueDate(newDueDate);
 			this->tasks[i].setDescription(newDescription);
-
-			cout << "Task " << taskName << " has been editted in the vector" << endl;
 		}
 	}
 }
@@ -83,9 +80,6 @@ void User::editTaskNameInVector(string taskName, string newTaskName) {
 	for (int i = 0; i < this->tasks.size(); i++) {
 		if (this->tasks[i].getTaskName() == taskName) {
 			this->tasks[i].setTaskName(newTaskName);
-
-			cout << "Task " << taskName << " Name, has been editted to " << newTaskName << " in the vector" << endl;
-			cout << "Vector size = " << this->tasks.size() << endl;
 		}
 	}
 }
@@ -94,8 +88,6 @@ void User::editTaskDueDateInVector(string taskName, string newTaskDueDate) {
 	for (int i = 0; i < this->tasks.size(); i++) {
 		if (this->tasks[i].getTaskName() == taskName) {
 			this->tasks[i].setDueDate(newTaskDueDate);
-
-			cout << "Task " << taskName << " Due Date, has been editted to " << newTaskDueDate << " in the vector" << endl; 
 		}
 	}
 }
@@ -104,15 +96,11 @@ void User::editTaskDescriptionInVector(string taskName, string newTaskDescriptio
 	for (int i = 0; i < this->tasks.size(); i++) {
 		if (this->tasks[i].getTaskName() == taskName) { 
 			this->tasks[i].setDescription(newTaskDescription);
-
-			cout << "Task " << taskName << " description, has been editted to " << newTaskDescription << " in the vector" << endl;
 		}
 	}
 }
 
 void User::sortTaskvectorByName() {
-
-	cout << "User objeect function sortTaskByName() was called" << endl;
 	vector <string> taskNames;
 	vector <Task> newTaskVector;
 
@@ -143,7 +131,6 @@ void User::sortTaskvectorByName() {
 	}
 }
 void User::sortTaskvectorByDate() {
-	cout << "User objeect function sortTaskByName() was called" << endl;
 	vector <string> taskDueDates; 
 	vector <Task> newTaskVector; 
 

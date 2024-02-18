@@ -99,27 +99,6 @@ int main()
             res.end();
 		});
 
-    /* CROW_ROUTE(app, "/<string>") //to get the home.html
-        ([](const crow::request& req, crow::response& res, string filename) {
-            if (filename == "SignUpPage.html")
-            {
-                string path = "../public/SignUpPage.html";
-
-                ifstream in(path, ifstream::in);
-                if (in) {
-                    ostringstream contents;
-                    contents << in.rdbuf();
-                    in.close();
-                    res.write(contents.str());
-                }
-                else {
-                    res.write("Not Found");
-                }
-                res.end();
-            }
-        }); */ 
-
-
 	CROW_ROUTE(app, "/<string>").methods(HTTPMethod::Get, HTTPMethod::Post, HTTPMethod::Patch, HTTPMethod::Delete, HTTPMethod::Put, HTTPMethod::Options)
 		([](const crow::request& req, crow::response& res, string filename)
 			{
@@ -191,8 +170,6 @@ int main()
                     res.end(); 
                 }
                 else if (filename == "login") {
-                    cout << "Entered route" << endl; 
-                    
                     std::string passedEmail = req.url_params.get("email"); 
                     std::string passedPassword = req.url_params.get("password"); 
                     user.setEmail(passedEmail); 
@@ -202,7 +179,6 @@ int main()
 
                     if (userFound)
                     {
-
                         if (userLoggedIn == false) {
                            user = queryDBForAllTask( err, taskdb, taskstmt, user); 
                         }
@@ -257,11 +233,7 @@ int main()
                         std::string taskDueDate = req.url_params.get("dueDate");  
                         std::string taskDescription = req.url_params.get("taskDescription"); 
 
-                        Task task; 
-                        task.setUserEmail(user.getEmail());
-                        task.setTaskName(taskName);  
-                        task.setDueDate(taskDueDate);      
-                        task.setDescription(taskDescription);
+                        Task task(user.getEmail(), taskName, taskDueDate, taskDescription);    
 
                         addTaskToDB(err, taskdb, taskstmt, task); 
                         user.addToTasksVector(task); 
@@ -282,8 +254,6 @@ int main()
                     } 
                 }
                 else if (filename == "Individual_Task_Page") {
-                    cout << "Entered route" << endl;
-
                     std::string taskName = req.url_params.get("taskName"); 
 
                     forIndividualTask = queryDBForSpecificTask(err, taskdb, taskstmt, taskName, user); 
@@ -404,15 +374,11 @@ int main()
                     res.end();
                 } 
                 else if (filename == "newTaskName") {
-                    cout << "Entered edit task name route" << endl; 
-
                     string patch = "PATCH";
                     string method = method_name(req.method); 
                     int resultPost = patch.compare(method); 
 
                     if (resultPost == 0) {
-                        cout << "Entered check patch" << endl;
-
                         auto json = crow::json::load(req.body); 
                         cout << json << endl; 
                         if (!json) {
@@ -423,20 +389,10 @@ int main()
                             return;
                         }
                         else{
-                            cout << "JSON is not empty" << endl; 
                             std::string newTaskName = json["newTaskName"].s(); 
 
-                            cout << "New Task Name: " << newTaskName << endl; 
-
                             editTaskNameInDB(err, taskdb, taskstmt, user, forIndividualTask.getTaskName(), newTaskName); 
-
-                            cout << "Task name should have been edited" << endl;
                         }
-
-                        //const_cast<crow::request&>(req).method = crow::HTTPMethod::GET; 
-                        //cout << method_name(req.method) << endl; 
-                        //res.redirect("/taskspage"); 
-                        //res.end(); 
                     }
                     else if (resultPost != 0) {
                         string path = "../public/taskspage.html";
@@ -455,15 +411,11 @@ int main()
                     }
                 }
                 else if (filename == "newTaskDueDate") {
-                    cout << "Entered edit task due date route" << endl;
-
                     string patch = "PATCH";
                     string method = method_name(req.method);
                     int resultPost = patch.compare(method);
 
                     if (resultPost == 0) {
-                        cout << "Entered check patch 2" << endl;
-
                         auto json = crow::json::load(req.body);
                         cout << json << endl;
                         if (!json) {
@@ -474,20 +426,10 @@ int main()
                             return;
                         }
                         else {
-                            cout << "JSON is not empty" << endl;
                             std::string newTaskDueDate = json["newTaskDueDate"].s(); 
 
-                            cout << "New Task Due Date: " << newTaskDueDate << endl;
-
                             editDuedateInDB(err, taskdb, taskstmt, user, forIndividualTask.getTaskName(), newTaskDueDate); 
-
-                            cout << "Task due date should have been edited" << endl;
                         }
-
-                        //const_cast<crow::request&>(req).method = crow::HTTPMethod::GET; 
-                        //cout << method_name(req.method) << endl; 
-                        //res.redirect("/taskspage"); 
-                        //res.end(); 
                     }
                     else if (resultPost != 0) {
                         string path = "../public/taskspage.html";
@@ -506,15 +448,11 @@ int main()
                     }
                 }
                 else if (filename == "newTaskDescription") {
-                    cout << "Entered edit task description route" << endl;
-
                     string patch = "PATCH";
                     string method = method_name(req.method);
                     int resultPost = patch.compare(method);
 
                     if (resultPost == 0) {
-                        cout << "Entered check patch 3" << endl;
-
                         auto json = crow::json::load(req.body);
                         cout << json << endl;
                         if (!json) {
@@ -525,20 +463,10 @@ int main()
                             return;
                         }
                         else {
-                            cout << "JSON is not empty" << endl; 
                             std::string newTaskDescription = json["newTaskDescription"].s(); 
 
-                            cout << "New Task Description: " << newTaskDescription << endl;
-
                             editDescriptionInDB(err, taskdb, taskstmt, user, forIndividualTask.getTaskName(), newTaskDescription); 
-
-                            cout << "Task description should have been edited" << endl;
                         }
-
-                        //const_cast<crow::request&>(req).method = crow::HTTPMethod::GET; 
-                        //cout << method_name(req.method) << endl; 
-                        //res.redirect("/taskspage"); 
-                        //res.end(); 
                     }
                     else if (resultPost != 0) {
                         string path = "../public/taskspage.html";
@@ -557,15 +485,11 @@ int main()
                     }
                 }
                 else if (filename == "deleteTask") {
-                    cout << "Entered delete task route" << endl; 
-
                     std::string deleteVerb = "DELETE";
                     std::string method = method_name(req.method); 
                     int resultDelete = deleteVerb.compare(method); 
 
                     if (resultDelete == 0) {
-                        cout << "Entered check delete" << endl;
-
                         auto json = crow::json::load(req.body);
                         cout << json << endl;
                         if (!json) {
@@ -579,12 +503,8 @@ int main()
                             cout << "JSON is not empty" << endl;
                             std::string taskName = json["taskName"].s(); 
 
-                            cout << "Task name: " << taskName << endl; 
-
                             deleteTaskFromDB(err, taskdb, taskstmt, taskName, user); 
                             user = queryDBForAllTask(err, taskdb, taskstmt, user); 
-
-                            cout << "Task should have been deleted" << endl; 
                         } 
                     }
                     else if (resultDelete != 0) { 
@@ -604,14 +524,11 @@ int main()
                     }
                 }
                 else if (filename == "editTaskInformation") {
-                    cout << "Entered edit task info route" << endl;
-
                     std::string put = "PUT";
                     std::string method = method_name(req.method);
                     int resultPut = put.compare(method); 
 
                     if (resultPut == 0) { 
-                        cout << "Entered check put" << endl;
 
                         auto json = crow::json::load(req.body);
                         cout << json << endl;
@@ -633,8 +550,6 @@ int main()
                             cout << "New task description: " << newTaskDescription << endl; 
 
                             editTask(err, taskdb, taskstmt, user, forIndividualTask, newTaskName, newTaskDueDate, newTaskDescription); 
-
-                            cout << "Task information should have been edited" << endl; 
                         } 
                     }
                     else if (resultPut != 0) { 
@@ -655,11 +570,6 @@ int main()
                 }
 
                 else if (filename == "loadTaskPage") {
-
-                    //std::string newTaskName = req.url_params.get("newTaskName");
-
-                    //editTaskNameInDB(err, taskdb, taskstmt, user, forIndividualTask.getTaskName(), newTaskName);
-
                     string path = "../public/taskspage.html";
 
                     ifstream in(path, ifstream::in);
@@ -676,8 +586,6 @@ int main()
                 }
 
                 else if (filename == "sortByName") {  
-                    cout << "Went into sort by Name route" << endl;
-
                     user.sortTaskvectorByName(); 
 
                     for (int i = 0; i < user.tasks.size(); i++) {
@@ -689,10 +597,6 @@ int main()
                 else if (filename == "sortByDate") {
 
                     user.sortTaskvectorByDate();
-
-                    for (int i = 0; i < user.tasks.size(); i++) {
-                        cout << "Due date: " << user.tasks[i].getDueDate() << endl;
-                    }
 
                     string path = "../public/taskspage.html";
 
@@ -716,7 +620,6 @@ int main()
 
         crow::json::wvalue jsonData; 
 
-        //user = queryDBForAllTask(err, taskdb, taskstmt, user);
         string taskName, taskDescription, taskDueDate; 
         vector <string> vectTaskName; 
         vector <string> vectTaskDescription;
@@ -727,9 +630,6 @@ int main()
             taskName = user.tasks[i].getTaskName(); 
             taskDescription = user.tasks[i].getDescription(); 
             taskDueDate = user.tasks[i].getDueDate();
-
-            cout << "Task Name in login/1 route: " << user.tasks[i].getTaskName() << endl; 
-            cout << "Task Due date in login/1 route: " << user.tasks[i].getDueDate() << endl;
 
             vectTaskName.push_back(taskName); 
             vectTaskDescription.push_back(taskDescription); 
@@ -748,14 +648,6 @@ int main()
         vectTaskName.clear(); 
         vectTaskDescription.clear(); 
         vectTaskDueDate.clear(); 
-        if (vectTaskName.empty()) {
-            cout << "vect is empty" << endl; 
-            std::cout << "Vector size after clearing: " << vectTaskName.size() << std::endl; 
-        }
-        else
-        {
-            cout << "vect is not empty" << endl; 
-        }
 
         return crow::response(jsonData.dump());  
         }); 
@@ -773,11 +665,7 @@ int main()
                 std::string decodedTaskName = urlDecode(taskName); 
                 std::string decodedTaskDescription = urlDecode(taskDescription); 
 
-                Task task;
-                task.setUserEmail(user.getEmail());
-                task.setTaskName(decodedTaskName);
-                task.setDueDate(dueDate); 
-                task.setDescription(decodedTaskDescription); 
+                Task task(user.getEmail(), decodedTaskName, dueDate, decodedTaskDescription); 
 
                 addTaskToDB(err, taskdb, taskstmt, task);
                 user.addToTasksVector(task);
@@ -833,8 +721,6 @@ int main()
     CROW_ROUTE(app, "/deleteTask/<string>").methods(HTTPMethod::Delete) 
         ([](const crow::request& req, crow::response& res, string taskName) 
             {
-                cout << "Delete route" << endl; 
-
                 deleteTaskFromDB(err, taskdb, taskstmt, taskName, user); 
 
                 string path = "../public/taskpage.html";

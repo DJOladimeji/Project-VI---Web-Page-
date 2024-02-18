@@ -13,16 +13,15 @@ function sortBy(option) {
     var route = (option === 'Name') ? '/sortByName' : '/sortByDate';
 
     // Making an OPTIONS request to the specified route
-   var xhr = new XMLHttpRequest();
-    xhr.open('OPTIONS', route, true);
+    var xhr = new XMLHttpRequest();
+    xhr.open('GET', route, true);
     xhr.onreadystatechange = function() {
         if (xhr.readyState === 4) {
             if (xhr.status === 200) {
                 console.log('OPTIONS request successful');
                 // Perform additional actions if needed
 
-                //window.location.reload();
-                window.location.href = '/loadTaskPage';
+                window.location.reload();
             } else {
                 console.error('Error making OPTIONS request');
             }

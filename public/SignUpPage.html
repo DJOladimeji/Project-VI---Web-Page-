@@ -1,145 +1,86 @@
 <!DOCTYPE html>
-<html lang="en">
+<html>
 <head>
-    <script>
-        document.addEventListener('DOMContentLoaded', function () {
-          var passwordField = document.getElementById('password');
-          var confirmPasswordField = document.getElementById('confirmPassword');
-          var submitButton = document.getElementById('submitButton');
-      
-          function checkPassword() {
-            if (passwordField.value !== confirmPasswordField.value) {
-              confirmPasswordField.setCustomValidity('Passwords do not match');
-            } else {
-              confirmPasswordField.setCustomValidity('');
-            }
-          }
-      
-          passwordField.addEventListener('input', checkPassword);
-          confirmPasswordField.addEventListener('input', checkPassword);
-      
-          submitButton.addEventListener('click', function () {
-            checkPassword();
-            // Continue with form submission if passwords match
-            if (passwordField.checkValidity() && confirmPasswordField.checkValidity()) {
-              // Add any additional actions needed before submitting the form
-              alert('Form submitted successfully!');
-            }
-          });
-        });
-      </script>
-      
-  <meta charset="UTF-8">
-  <title>Sign Up Page</title>
-  <link rel="stylesheet" href="styles/SignUpStyles.css">
+    <meta charset="utf-8">
+    <title>Project VI</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    
+    <link rel="stylesheet" href="fonts/material-design-iconic-font/css/material-design-iconic-font.min.css">
+
+    <link rel="stylesheet" href="styles/SignUpStyles.css">
+ 
 </head>
+ 
 <body>
-  <div id="bg"></div>
 
-  <form id="signupPage" action="">
-    <div class="form-field">
-      <input type="text" id="firstName" name="firstName" placeholder="First Name" required/>
+    <div class="wrapper" style="background-image: url(images/SignUpPage2.jpg);">
+        <div class="inner">
+            <div class="image-holder">
+                <img src="images/SignUpPage2.jpg" alt="" height="400" width="400">
+            </div>
+            <form id="signupPage" action=""> 
+                <h3>Sign Up</h3>
+                <div class="form-group">
+                    <input type="text" id="firstName" name="firstName" placeholder="First Name" class="form-control">
+                    <input type="text" id="lastName" name="lastName" placeholder="Last Name" class="form-control">
+                </div>
+                <div class="form-wrapper">
+                    <input type="text" id="email" name="email" placeholder="Email Address" class="form-control">
+                    <i class="zmdi zmdi-email"></i>
+                </div>
+                <div class="form-wrapper">
+                    <input type="password" id="password" name="password" placeholder="Password" class="form-control">
+                    <i class="zmdi zmdi-lock"></i>
+                </div>
+                <div class="form-wrapper">
+                    <input type="password" id="confirmPassword" placeholder="Confirm Password" class="form-control">
+                    <i class="zmdi zmdi-lock"></i>
+                </div>
+                <div><h4><p style="margin-left: 220px; line-height: 1;"><a href="#" onclick="myFunction()">Register</a></p></h4></div>
+
+                <!--<a href="#" button type="button" onclick="myFunction()">Register</a>
+                    <i class="zmdi zmdi-arrow-right"></i>
+                </button>-->
+            </form>
+            <div class="overlay" id="overlay"></div>
+            <div class="popup" id="popup">
+                <p id="error-message" style="color: red;">Please fill in all the required fields.</p>
+                <button onclick="closePopup()">OK</button>
+            </div>
+        </div>
     </div>
 
-    <div class="form-field">
-      <input type="text" id="lastName" name="lastName" placeholder="Last Name" required/>
-    </div>
+    <script>
+        function myFunction() {
+            /*var firstName = document.getElementById('firstName').value;
+            var lastName = document.getElementById('lastName').value;
+            var email = document.getElementById('email').value;
+            var password = document.getElementById('password').value;
+            //var confirmPassword = document.getElementById('confirmPassword').value;
+            //confirmPassword === ''
 
-    <div class="form-field">
-      <input type="email" id="email" name="email" placeholder="Email Address" required/>
-    </div>
+            if (firstName === '' || lastName === '' || email === '' || password === '') 
+			{
+                document.getElementById('overlay').style.display = 'block';
+                document.getElementById('popup').style.display = 'block';
+            } else 
+			{
+                document.getElementById('overlay').style.display = 'none';
+                document.getElementById('popup').style.display = 'none';
+                document.getElementById('registrationForm').submit();
+            }*/ 
 
-    <div class="form-field">
-      <input type="password" id="password" name="password" placeholder="Password" required/>
-    </div>
-
-    <div class="form-field">
-      <input type="password" id="confirmPassword" name="confirmPassword" placeholder="Confirm Password" required/>
-    </div>
-
-    </div>
-    <div class="form-field">
-
-        <style>
-          div h4 a {
-            display: inline-block;
-            padding: 10px 20px;
-            background-color: #4CAF50;
-            color: #fff;
-            text-decoration: none;
-            border-radius: 5px;
-          }
-        </style>
-        
-        <!--<button class="btn" type="submit">Log in</button>-->
-        <div><h4><p style="margin-left: 142px; line-height: 1;"><a href="#" onclick="myFunction()">Sign up</a></p></h4></div>
-      </div>
-  </form>
-
-  <script>
-    function myFunction() {
-        /*var firstName = document.getElementById('firstName').value;
-        var lastName = document.getElementById('lastName').value;
-        var email = document.getElementById('email').value;
-        var password = document.getElementById('password').value;
-        //var confirmPassword = document.getElementById('confirmPassword').value;
-        //confirmPassword === ''
-
-        if (firstName === '' || lastName === '' || email === '' || password === '') 
-  {
-            document.getElementById('overlay').style.display = 'block';
-            document.getElementById('popup').style.display = 'block';
-        } else 
-  {
-            document.getElementById('overlay').style.display = 'none';
-            document.getElementById('popup').style.display = 'none';
-            document.getElementById('registrationForm').submit();
-        } 
-
-        var action = "/register"; 
-        document.getElementById("signupPage").action = action; 
-        document.getElementById("signupPage").submit();*/ 
-        var action = "/register"; 
+            var action = "/register"; 
             document.getElementById("signupPage").action = action; 
             document.getElementById("signupPage").submit(); 
+        }
 
-        fetch('/register', {
-            method: 'GET', 
-            headers: {
-                'Content-Type': 'application/json',
-            },
-            //body: JSON.stringify({ newTaskName: document.getElementById("newTaskName").value }), 
-            //body: JSON.stringify({ newTaskDueDate: document.getElementById("newTaskDueDate").value }),
-            //body: JSON.stringify({ newTaskDescription: document.getElementById("newTaskDescription").value }),
-            body: JSON.stringify({
-            firstName: document.getElementById("firstName").value,
-            lastName: document.getElementById("lastName").value,
-            email: document.getElementById("email").value,
-            password: document.getElementById("password").value
-            }), 
-        })
-        .then(response => {
-            if (!response.ok) {
-                throw new Error('Network response was not ok');
-            }
-            return response.json();
-        })
-        .then(data => {
-            // Handle the response data
-            console.log(data);
-        })
-        .catch(error => {
-            // Handle errors
-            console.error('Error:', error);
-        }); 
-    }
-
-    function closePopup() {
-        document.getElementById('overlay').style.display = 'none';
-        document.getElementById('popup').style.display = 'none';
-    }
-</script>
+        function closePopup() 
+		{
+            document.getElementById('overlay').style.display = 'none';
+            document.getElementById('popup').style.display = 'none';
+        }
+    </script>
 
 </body>
-
 </html>

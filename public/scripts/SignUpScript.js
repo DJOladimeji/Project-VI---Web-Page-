@@ -12,5 +12,5 @@ function validateForm(event) {
         // Perform further authentication or form submission logic here
         errorMessage.textContent = ""; // Clear any previous error messages
         alert("Sign in successful!");
-    }
+    } 
 }
